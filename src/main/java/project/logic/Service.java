@@ -30,6 +30,9 @@ public class Service {
         return data_employees.certain_objects(something);
     }
 
+    public ArrayList<Employee> get_employees() {
+        return data_employees.all_objects();
+    }
     public void employees_add(Employee e) {
         if (this.employees_search(e).isEmpty())
             data_employees.push(e);
@@ -39,6 +42,10 @@ public class Service {
 
     public <T> ArrayList<Branch_Office> branch_offices_search(T something) {
         return data_branch_offices.certain_objects(something);
+    }
+
+    public ArrayList<Branch_Office> get_branch_offices() {
+        return data_branch_offices.all_objects();
     }
 
     public void branch_offices_add(Branch_Office b) {

@@ -17,7 +17,7 @@ public class View implements Observer {
     private JButton search_button;
     private JTextField reference_field;
     private JLabel reference_label;
-    private JTextField zonage_percetange_field;
+    private JTextField zonage_percentage_field;
     private JLabel zonage_percentage_label;
     private JPanel map_panel;
     private JLabel direction_label;
@@ -30,7 +30,21 @@ public class View implements Observer {
         search_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.search(code_field.getText());
+                if (!code_field.getText().isEmpty() && !reference_field.getText().isEmpty() && !zonage_percentage_field.getText().isEmpty())
+                    controller.search("Branch_Office{" +
+                            "code='" + code_field.getText() + '\'' +
+                            ", reference='" + reference_field.getText() + '\'' +
+                            ", zonage_percentage=" + zonage_percentage_field.getText());
+                else if (!code_field.getText().isEmpty())
+                    controller.search_by_code(code_field.getText());
+                else if (!reference_field.getText().isEmpty())
+                    controller.search_by_reference(reference_field.getText());
+                else if (!zonage_percentage_field.getText().isEmpty())
+                    controller.search_by_zonage_percentage(zonage_percentage_field.getText());
+                else if (!direction_field.getText().isEmpty())
+                    controller.search(direction_field.getText());
+                else
+                    controller.update();
             }
         });
         add_button.addActionListener(new ActionListener() {

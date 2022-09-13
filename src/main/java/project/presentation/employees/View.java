@@ -23,12 +23,35 @@ public class View implements Observer {
     private JTextField id_field;
     private javax.swing.JScrollPane JScrollPane;
     private JPanel map_panel;
+    private JTextField salary_field;
+    private JLabel salary_label;
+    private JLabel branch_office_label;
+    private JTextField branch_office_field;
+    private JLabel phone_label;
+    private JTextField phone_field;
 
     public View() {
         search_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.search(id_field.getText());
+                if (!id_field.getText().isEmpty() && !name_field.getText().isEmpty() && !phone_field.getText().isEmpty() && !salary_field.getText().isEmpty())
+                    controller.search("Employee{" +
+                            "id='" + id_field.getText() + '\'' +
+                            ", name='" + name_field.getText() + '\'' +
+                            ", phone='" + phone_field.getText() + '\'' +
+                            ", base_salary=" + salary_field.getText());
+                else if (!id_field.getText().isEmpty())
+                    controller.search_by_id(id_field.getText());
+                else if (!name_field.getText().isEmpty())
+                    controller.search_by_name(name_field.getText());
+                else if (!phone_field.getText().isEmpty())
+                    controller.search_by_phone(phone_field.getText());
+                else if (!salary_field.getText().isEmpty())
+                    controller.search_by_salary(salary_field.getText());
+                else if (!branch_office_field.getText().isEmpty())
+                    controller.search(branch_office_field.getText());
+                else
+                    controller.update();
             }
         });
         add_button.addActionListener(new ActionListener() {
