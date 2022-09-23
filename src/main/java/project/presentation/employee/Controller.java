@@ -1,7 +1,6 @@
-package project.presentation.branch_office;
+package project.presentation.employee;
 
 import project.Application;
-import project.logic.Branch_Office;
 import project.logic.Employee;
 import project.logic.Service;
 
@@ -14,7 +13,7 @@ public class Controller {
     Model model;
 
     public Controller(View view, Model model) {
-        model.set_current(new Branch_Office());
+        model.set_current(new Employee());
 
         this.view = view;
         this.model = model;
@@ -24,7 +23,7 @@ public class Controller {
 
     public void pre_add() {
         model.set_mode(Application.ADD_MODE);
-        model.set_current(new Branch_Office());
+        model.set_current(new Employee());
         model.commit();
         this.show();
     }
@@ -54,21 +53,25 @@ public class Controller {
         Application.main_controller.show();
     }
 
-    public void save(Branch_Office b) throws Exception {
+    public void save(Employee e) throws Exception {
         switch (model.get_mode()) {
             case Application.ADD_MODE:
-                Service.instance().branch_office_add(b);
-                model.set_current(new Branch_Office());
+                Service.instance().employee_add(e);
+                model.set_current(new Employee());
                 break;
             case Application.EDIT_MODE:
-                Service.instance().branch_office_update(b);
-                model.set_current(b);
+                Service.instance().employee_update(e);
+                model.set_current(e);
                 break;
         }
-        Application.branch_offices_controller.update();
+        Application.employees_controller.update();
         model.commit();
     }
 
-    public void edit(Branch_Office b) {
+    public void edit(Employee e) {
+        model.set_mode(Application.EDIT_MODE);
+        model.set_current(e);
+        model.commit();
+        this.show();
     }
 }

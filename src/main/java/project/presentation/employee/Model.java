@@ -1,9 +1,9 @@
-package project.presentation.branch_office;
+package project.presentation.employee;
 
-import project.logic.Branch_Office;
+import project.logic.Employee;
 
 public class Model extends java.util.Observable{
-    Branch_Office current;
+    Employee current;
     int mode;
 
     public Model() {
@@ -18,11 +18,11 @@ public class Model extends java.util.Observable{
         this.mode = mode;
     }
 
-    public Branch_Office get_current() {
+    public Employee get_current() {
         return current;
     }
 
-    public void set_current(Branch_Office current) {
+    public void set_current(Employee current) {
         this.current = current;
     }
 

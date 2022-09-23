@@ -4,8 +4,12 @@ import project.logic.Branch_Office;
 import project.logic.Employee;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -29,6 +33,8 @@ public class View implements Observer {
     private JTextField branch_office_field;
     private JLabel phone_label;
     private JTextField phone_field;
+    private JButton erase_button;
+    private JButton pdf_button;
 
     public View() {
         search_button.addActionListener(new ActionListener() {
@@ -57,7 +63,36 @@ public class View implements Observer {
         add_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.add(new Employee(id_field.getText(), "test_name", "test_Phone", 10.0, new Branch_Office()));
+                controller.pre_add();
+            }
+        });
+        results_field.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int row = results_field.getSelectedRow();
+                    controller.edit(row);
+                }
+            }
+        });
+        erase_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = results_field.getSelectedRow();
+                controller.erase(row);
+            }
+        });
+
+        pdf_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.print();
+                    if (Desktop.isDesktopSupported()) {
+                        File myFile = new File("employees.pdf");
+                        Desktop.getDesktop().open(myFile);
+                    }
+                } catch (Exception ex) {}
             }
         });
     }
