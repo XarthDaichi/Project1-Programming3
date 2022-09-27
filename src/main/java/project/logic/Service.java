@@ -38,7 +38,7 @@ public class Service {
         return data.all_objects_employees();
     }
     public void employee_add(Employee e) throws Exception {
-        if (this.employees_search(e) == null) data.push(e);
+        if (this.employees_search(e).size() == 0) data.push(e);
         else throw new Exception("Employee is already in the system");
     }
 
@@ -75,21 +75,19 @@ public class Service {
         return data.all_objects_branch_offices();
     }
 
-    public Branch_Office get_branch_office(String reference) throws Exception {
-        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_reference().equals(reference)).findFirst().orElse(null);
+    public Branch_Office get_branch_office(String code) throws Exception {
+        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_code().equals(code)).findFirst().orElse(null);
         if (result!=null) return result;
         else throw new Exception("Branch Office does not exist");
     }
 
     public void branch_office_add(Branch_Office b) {
-        if (this.branch_offices_search(b).isEmpty())
-            data.push(b);
-        else
-            throw new IllegalArgumentException("Branch Office is already in the system");
+        if (this.branch_offices_search(b).size() == 0) data.push(b);
+        else throw new IllegalArgumentException("Branch Office is already in the system");
     }
 
     public void branch_office_delete(Branch_Office branch_office) throws Exception {
-        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_reference().equals(branch_office.get_reference())).findFirst().orElse(null);
+        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_code().equals(branch_office.get_code())).findFirst().orElse(null);
         if (result != null) data.erase(branch_office);
         else throw new Exception("Branch Office does not exits");
     }
@@ -97,7 +95,7 @@ public class Service {
     public void branch_office_update(Branch_Office branch_office) throws Exception{
         Branch_Office result;
         try {
-            result = this.get_branch_office(branch_office.get_reference());
+            result = this.get_branch_office(branch_office.get_code());
             data.erase(result);
             data.push(branch_office);
         } catch (Exception e) {

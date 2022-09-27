@@ -69,19 +69,19 @@ public class Controller {
     }
 
     public void edit(int row) {
-        String reference = model.get_branch_offices().get(row).get_reference();
+        String code = model.get_branch_offices().get(row).get_code();
         Branch_Office b = null;
         try {
-            b = Service.instance().get_branch_office(reference);
+            b = Service.instance().get_branch_office(code);
             Application.branch_office_controller.edit(b);
         } catch (Exception ex) {}
     }
 
     public void erase(int row) {
-        String reference = model.get_branch_offices().get(row).get_reference();
+        String code = model.get_branch_offices().get(row).get_code();
         Branch_Office b = null;
         try {
-            b = Service.instance().get_branch_office(reference);
+            b = Service.instance().get_branch_office(code);
             Service.instance().branch_office_delete(b);
             this.update();
         } catch (Exception ex) {}
@@ -132,7 +132,7 @@ public class Controller {
         header.setWidth(400);
         header.setHorizontalAlignment(HorizontalAlignment.CENTER);
         header.addCell(get_cell(new Paragraph("Integrated System SISE").setFont(font).setBold().setFontSize(20f), TextAlignment.CENTER,false));
-        header.addCell(get_cell(new Image(ImageDataFactory.create("logo.jpg")), HorizontalAlignment.CENTER,false));
+//        header.addCell(get_cell(new Image(ImageDataFactory.create("logo.jpg")), HorizontalAlignment.CENTER,false));
         document.add(header);
 
         document.add(new Paragraph(""));document.add(new Paragraph(""));

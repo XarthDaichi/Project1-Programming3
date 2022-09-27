@@ -74,6 +74,7 @@ public class View implements Observer {
         Branch_Office e = new Branch_Office();
         e.set_code(code_text.getText());
         e.set_reference(reference_text.getText());
+        e.set_zonage_percentage(Double.parseDouble(zonage_percentage_text.getText()));
         return e;
     }
 

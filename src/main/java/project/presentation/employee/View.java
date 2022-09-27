@@ -1,6 +1,7 @@
 package project.presentation.employee;
 
 import project.Application;
+import project.logic.Branch_Office;
 import project.logic.Employee;
 
 import javax.swing.*;
@@ -74,6 +75,9 @@ public class View implements Observer {
         Employee e = new Employee();
         e.set_id(id_text.getText());
         e.set_name(name_text.getText());
+        e.set_phone(phone_text.getText());
+        e.set_base_salary(Double.parseDouble(salary_text.getText()));
+        e.set_work_place(new Branch_Office());
         return e;
     }
 

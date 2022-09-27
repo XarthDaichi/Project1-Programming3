@@ -32,17 +32,17 @@ public class Data {
     }
 
     public <T> void push(T element) {
-        if ((Employee) element != null) vec_employees.add((Employee) element);
-        else if ((Branch_Office) element != null) vec_branch_offices.add((Branch_Office) element);
+        if (element.getClass() == Employee.class) vec_employees.add((Employee) element);
+        else if (element.getClass() == Branch_Office.class) vec_branch_offices.add((Branch_Office) element);
     }
 
     public <T> void pop(T element) {
-        if ((Employee) element != null) {
+        if (element.getClass() == Employee.class) {
             if (vec_employees.isEmpty()) throw new java.lang.IndexOutOfBoundsException("empty container");
             vec_employees.remove(vec_employees.size()-1);
 
         }
-        else if ((Branch_Office) element != null) {
+        else if (element.getClass() == Branch_Office.class) {
             if (vec_branch_offices.isEmpty()) throw new java.lang.IndexOutOfBoundsException("empty container");
             vec_branch_offices.remove(vec_branch_offices.size()-1);
 
@@ -51,12 +51,12 @@ public class Data {
     }
 
     public <T> void top(T element) {
-        if ((Employee) element != null) {
+        if (element.getClass() == Employee.class) {
             if (vec_employees.isEmpty()) {
                 throw new java.lang.IndexOutOfBoundsException("empty container");
             }
         }
-        else if ((Branch_Office) element != null) {
+        else if (element.getClass() == Branch_Office.class) {
             if (vec_branch_offices.isEmpty()) {
                 throw new java.lang.IndexOutOfBoundsException("empty container");
             }
@@ -65,17 +65,18 @@ public class Data {
     }
 
     public <T> void insert(int position, T element) {
-        if ((Employee) element != null) vec_employees.add(position, (Employee) element);
-        else if ((Branch_Office) element != null) vec_branch_offices.add(position, (Branch_Office) element);
+        if (element.getClass() == Employee.class) vec_employees.add(position, (Employee) element);
+        else if (element.getClass() == Branch_Office.class) vec_branch_offices.add(position, (Branch_Office) element);
     }
 
     public <T> void erase(T element) {
-        if ((Employee) element != null) {
+        if (element.getClass() == Employee.class) {
             if (vec_employees.isEmpty()) throw new java.lang.IndexOutOfBoundsException("empty container");
-
+            vec_employees.remove(element);
         }
-        else if ((Branch_Office) element != null) {
+        else if (element.getClass() == Branch_Office.class) {
             if (vec_branch_offices.isEmpty()) throw new java.lang.IndexOutOfBoundsException("empty container");
+            vec_branch_offices.remove(element);
         }
     }
 

@@ -66,7 +66,7 @@ public class Employee {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", base_salary=" + base_salary +
-                ", work_place=" + work_place.toString() +
+                ", work_place=" + work_place.get_reference() +
                 '}';
     }
 }
