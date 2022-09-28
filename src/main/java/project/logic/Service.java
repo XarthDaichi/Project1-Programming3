@@ -18,11 +18,15 @@ public class Service {
     private Data data;
 
     private Service() {
-        data = new Data();
-
-        data.push(new Employee("111", "Franklin Chang", "11111", 1.0, new Branch_Office()));
-        data.push(new Employee("222", "Sandra Cauffman", "22222", 2.0, new Branch_Office()));
-        data.push(new Employee("333", "Ivan Vargas", "33333", 3.0, new Branch_Office()));
+        //data = new Data();
+        try {
+            data=XmlPersister.instance().load();
+        } catch(Exception e) {
+            data = new Data();
+//            data.push(new Employee("111", "Franklin Chang", "11111", 1.0, new Branch_Office()));
+//            data.push(new Employee("222", "Sandra Cauffman", "22222", 2.0, new Branch_Office()));
+//            data.push(new Employee("333", "Ivan Vargas", "33333", 3.0, new Branch_Office()));
+        }
     }
 
     public <T> ArrayList<Employee> employees_search(T something) {

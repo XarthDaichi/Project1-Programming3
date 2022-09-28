@@ -2,6 +2,9 @@
 
 package project.data;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import project.logic.Branch_Office;
 import project.logic.Employee;
 
@@ -9,6 +12,8 @@ import java.util.ArrayList;
 
 import static java.util.stream.Collectors.toCollection;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Data {
     protected ArrayList<Employee> vec_employees;
     protected ArrayList<Branch_Office> vec_branch_offices;
