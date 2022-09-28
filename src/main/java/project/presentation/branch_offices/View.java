@@ -2,14 +2,16 @@ package project.presentation.branch_offices;
 
 import project.logic.Branch_Office;
 import project.logic.Direction;
+import javax.imageio.ImageIO;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.image.ImageObserver;
 import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -31,8 +33,55 @@ public class View implements Observer {
     private JPanel panel;
     private JButton erase_button;
     private JButton pdf_button;
+    private JLabel mapPanel;
 
     public View() {
+
+
+        mapPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Image mapa;
+                try {
+                    mapa = ImageIO.read(getClass().getResource("/CostaRicaMap.png"));
+                } catch (IOException ex) {
+                    System.out.println("No se encontró");
+                    throw new RuntimeException(ex);
+                }
+                mapa = mapa.getScaledInstance(400,400,1);
+
+                BufferedImage result= new BufferedImage(400,400,2);
+                Graphics g= result.getGraphics();
+                g.drawImage(mapa, 150, 150, new ImageObserver() {
+                    @Override
+                    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+                        return false;
+                    }
+                });
+                mapPanel.setIcon(new ImageIcon(result));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         search_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,6 +102,7 @@ public class View implements Observer {
                     controller.update();
             }
         });
+
         add_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
