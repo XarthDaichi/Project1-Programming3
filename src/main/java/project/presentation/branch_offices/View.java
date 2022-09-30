@@ -34,8 +34,24 @@ public class View implements Observer {
     private JButton pdf_button;
     private JPanel map_panel;
     private JLabel mapPanel;
+    private JPanel buttons_panel;
+
+    Image map;
+    Image branch_office;
+    Image branch_office_selected;
 
     public View() {
+        try {
+            mapPanel.setSize(700,700);
+            map = ImageIO.read(getClass().getResourceAsStream("../../../mapa.png"));
+            map = map.getScaledInstance(mapPanel.getWidth(), mapPanel.getHeight(), Image.SCALE_SMOOTH);
+            branch_office = ImageIO.read(getClass().getResourceAsStream("../../../Sucursal.png"));
+            branch_office_selected = ImageIO.read(getClass().getResourceAsStream("../../../SucursalSel.png"));
+            mapPanel.setIcon(new ImageIcon(map));
+        } catch(Exception ex) {
+            System.err.println(ex);
+        }
+        ToolTipManager.sharedInstance().setInitialDelay(2);
         mapPanel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
