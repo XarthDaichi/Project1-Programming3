@@ -22,6 +22,8 @@ public class View implements Observer {
     private JTextField salary_text;
     private JButton save_button;
     private JButton cancel_button;
+    private JPanel map_field;
+    private JLabel map_label;
 
     public View() {
         save_button.addActionListener(new ActionListener() {
@@ -119,5 +121,9 @@ public class View implements Observer {
             salary_label.setToolTipText(null);
         }
         return valid;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
