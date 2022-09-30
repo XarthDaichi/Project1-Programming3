@@ -40,7 +40,7 @@ public class View implements Observer {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    if(e.getX() > 110 && e.getX() < 400 && e.getY() > 125 && e.getY() < 390) {
+                    if(e.getX() > 10 && e.getX() < 500 && e.getY() > 20 && e.getY() < 500) {
                         BufferedImage myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Sucursal.png")));
                         JLabel icon = new JLabel(new ImageIcon(myPicture));
                         mapPanel.add(icon);
