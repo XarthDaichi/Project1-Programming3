@@ -16,6 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class View implements Observer {
+    private JPanel panel;
     private JPanel input_panel;
     private JPanel results_panel;
     private JLabel code_label;
@@ -28,13 +29,14 @@ public class View implements Observer {
     private JLabel direction_label;
     private JTextField direction_field;
     private JTable results_field;
+
+    private JPanel buttons_panel;
     private JButton add_button;
-    private JPanel panel;
     private JButton erase_button;
     private JButton pdf_button;
     private JPanel map_panel;
     private JLabel mapPanel;
-    private JPanel buttons_panel;
+
 
     Image map;
     Image branch_office;
