@@ -37,28 +37,10 @@ public class View implements Observer {
 
     public View() {
 
-
         mapPanel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Image mapa;
-                try {
-                    mapa = ImageIO.read(getClass().getResource("/CostaRicaMap.png"));
-                } catch (IOException ex) {
-                    System.out.println("No se encontró");
-                    throw new RuntimeException(ex);
-                }
-                mapa = mapa.getScaledInstance(400,400,1);
 
-                BufferedImage result= new BufferedImage(400,400,2);
-                Graphics g= result.getGraphics();
-                g.drawImage(mapa, 150, 150, new ImageObserver() {
-                    @Override
-                    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-                        return false;
-                    }
-                });
-                mapPanel.setIcon(new ImageIcon(result));
             }
 
             @Override
