@@ -124,6 +124,5 @@ public class View implements Observer {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 }

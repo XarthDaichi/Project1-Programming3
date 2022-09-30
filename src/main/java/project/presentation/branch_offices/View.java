@@ -25,7 +25,6 @@ public class View implements Observer {
     private JLabel reference_label;
     private JTextField zonage_percentage_field;
     private JLabel zonage_percentage_label;
-    private JPanel map_panel;
     private JLabel direction_label;
     private JTextField direction_field;
     private JTable results_field;
@@ -33,14 +32,26 @@ public class View implements Observer {
     private JPanel panel;
     private JButton erase_button;
     private JButton pdf_button;
+    private JPanel map_panel;
     private JLabel mapPanel;
 
     public View() {
-
         mapPanel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                try {
+                    if(e.getX() > 110 && e.getX() < 400 && e.getY() > 125 && e.getY() < 390) {
+                        BufferedImage myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Sucursal.png")));
+                        JLabel icon = new JLabel(new ImageIcon(myPicture));
+                        mapPanel.add(icon);
+                        icon.setLocation(e.getX() - 17,e.getY() - 32);
+                        icon.setSize(34,34);
+                        icon.setVisible(true);
+                    }
+                    System.out.println(e.getX() + ", " + e.getY());
+                } catch(Exception ex) {
+                    System.out.println("Error");
+                }
             }
 
             @Override
