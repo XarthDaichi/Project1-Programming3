@@ -3,6 +3,7 @@ package project.presentation.employees;
 import project.logic.Branch_Office;
 import project.logic.Employee;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,7 +28,6 @@ public class View implements Observer {
     private JLabel id_label;
     private JTextField id_field;
     private javax.swing.JScrollPane JScrollPane;
-    private JPanel map_panel;
     private JTextField salary_field;
     private JLabel salary_label;
     private JLabel branch_office_label;
@@ -35,8 +36,17 @@ public class View implements Observer {
     private JTextField phone_field;
     private JButton erase_button;
     private JButton pdf_button;
+    Image map;
 
     public View() {
+        try {
+            pdf_button.setSize(20,20);
+            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/pdf.png")));
+            map = map.getScaledInstance(pdf_button.getWidth(), pdf_button.getHeight(), Image.SCALE_SMOOTH);
+            pdf_button.setIcon(new ImageIcon(map));
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
         search_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
