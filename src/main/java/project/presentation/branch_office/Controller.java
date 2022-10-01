@@ -13,13 +13,14 @@ public class Controller {
 
     Model model;
 
+    public Model getModel() {return model; }
     public Controller(View view, Model model) {
         model.set_current(new Branch_Office());
 
-        this.view = view;
-        this.model = model;
         view.set_controller(this);
         view.set_model(model);
+        this.view = view;
+        this.model = model;
     }
 
     public void pre_add() {

@@ -39,7 +39,7 @@ public class Application {
         window.setTitle("System...");
         window.setVisible(true);
         main_controller.show();
-        System.out.println("Hello world!");
+        //System.out.println("Hello world!");
     }
 
     public static project.presentation.employees.Controller employees_controller;

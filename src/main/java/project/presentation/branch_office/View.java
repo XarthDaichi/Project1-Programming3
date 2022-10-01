@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
@@ -29,18 +32,60 @@ public class View implements Observer {
     Image map;
     Image branch_office;
     Image branch_office_selected;
+    JLabel locate;
 
     public View() {
+        locate = null;
         try {
             mapLabel.setSize(300,300);
-            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa11.png")));
+            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa.png")));
             map = map.getScaledInstance(mapLabel.getWidth(), mapLabel.getHeight(), Image.SCALE_SMOOTH);
             branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../Sucursal.png")));
+            branch_office = branch_office.getScaledInstance(18,18,Image.SCALE_SMOOTH);
             branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../SucursalSel.png")));
+            branch_office_selected = branch_office_selected.getScaledInstance(18,18,Image.SCALE_SMOOTH);
+
             mapLabel.setIcon(new ImageIcon(map));
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+        mapLabel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    //BufferedImage myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Sucursal.png")));
+                    if (locate == null) {
+                        locate = new JLabel(new ImageIcon(branch_office_selected));
+                        mapLabel.add(locate);
+                    }
+                    locate.setLocation(e.getX() - 9, e.getY() - 16);
+                    locate.setSize(18,18);
+                } catch(Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         save_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,6 +138,12 @@ public class View implements Observer {
         e.set_code(code_text.getText());
         e.set_reference(reference_text.getText());
         e.set_zonage_percentage(Double.parseDouble(zonage_percentage_text.getText()));
+        e.setX(locate.getX());
+        e.setY(locate.getY());
+        locate = new JLabel(new ImageIcon(branch_office_selected));
+        mapLabel.add(locate);
+        locate.setLocation(e.getX(), e.getY());
+        locate.setSize(18,18);
         return e;
     }
 
