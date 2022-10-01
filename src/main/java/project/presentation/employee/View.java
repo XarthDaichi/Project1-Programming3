@@ -4,9 +4,14 @@ import project.Application;
 import project.logic.Branch_Office;
 import project.logic.Employee;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,7 +30,49 @@ public class View implements Observer {
     private JPanel map_field;
     private JLabel map_label;
 
+    Image map;
+    Image branch_office;
+    Image branch_office_selected;
+
     public View() {
+        try {
+            map_label.setSize(300,300);
+            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa11.png")));
+            map = map.getScaledInstance(map_label.getWidth(), map_label.getHeight(), Image.SCALE_SMOOTH);
+            branch_office = ImageIO.read(getClass().getResourceAsStream("../../../Sucursal.png"));
+            branch_office_selected = ImageIO.read(getClass().getResourceAsStream("../../../SucursalSel.png"));
+            map_label.setIcon(new ImageIcon(map));
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        map_label.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println(e.getPoint());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         save_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

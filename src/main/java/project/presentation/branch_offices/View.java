@@ -5,6 +5,7 @@ import project.logic.Direction;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,9 +17,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class View implements Observer {
+    Vector<JLabel> locations;
+    Integer count;
     private JPanel panel;
     private JPanel input_panel;
-    private JPanel results_panel;
     private JLabel code_label;
     private JTextField code_field;
     private JButton search_button;
@@ -37,38 +39,79 @@ public class View implements Observer {
     private JPanel map_panel;
     private JLabel mapPanel;
 
-
     Image map;
     Image branch_office;
     Image branch_office_selected;
 
     public View() {
+        locations = new Vector<>();
         try {
-            mapPanel.setSize(700,700);
-            map = ImageIO.read(getClass().getResourceAsStream("../../../mapa.png"));
+            mapPanel.setSize(600,600);
+            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa11.png")));
             map = map.getScaledInstance(mapPanel.getWidth(), mapPanel.getHeight(), Image.SCALE_SMOOTH);
             branch_office = ImageIO.read(getClass().getResourceAsStream("../../../Sucursal.png"));
             branch_office_selected = ImageIO.read(getClass().getResourceAsStream("../../../SucursalSel.png"));
             mapPanel.setIcon(new ImageIcon(map));
         } catch(Exception ex) {
-            System.err.println(ex);
+            System.err.println("Error de lectura");
         }
         ToolTipManager.sharedInstance().setInitialDelay(2);
         mapPanel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    if(e.getX() > 10 && e.getX() < 500 && e.getY() > 20 && e.getY() < 500) {
+                    //if(e.getX() > 10 && e.getX() < 500 && e.getY() > 20 && e.getY() < 500) {
                         BufferedImage myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Sucursal.png")));
                         JLabel icon = new JLabel(new ImageIcon(myPicture));
+                    for (JLabel location : locations) {
+                        location.setIcon(new ImageIcon(myPicture));
+                    }
                         mapPanel.add(icon);
                         icon.setLocation(e.getX() - 17,e.getY() - 32);
                         icon.setSize(34,34);
                         icon.setVisible(true);
-                    }
-                    System.out.println(e.getX() + ", " + e.getY());
+                        locations.add(icon);
+                    System.out.println(e.getPoint());
+
+                        icon.addMouseListener(new MouseListener() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                try {
+                                    for (JLabel location : locations) {
+                                        location.setIcon(new ImageIcon(myPicture));
+                                    }
+                                    BufferedImage sel = ImageIO.read(Objects.requireNonNull(getClass().getResource("/SucursalSel.png")));
+                                    icon.setIcon(new ImageIcon(sel));
+                                }catch(Exception exc) {
+                                    System.out.println("Error");
+                                }
+                            }
+
+                            @Override
+                            public void mousePressed(MouseEvent e) {
+
+                            }
+
+                            @Override
+                            public void mouseReleased(MouseEvent e) {
+
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+
+                            }
+
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+
+                            }
+                        });
+
+                    //}
+                    //System.out.println(e.getX() + ", " + e.getY());
                 } catch(Exception ex) {
-                    System.out.println("Error");
+                    System.out.println(ex.getMessage());
                 }
             }
 
