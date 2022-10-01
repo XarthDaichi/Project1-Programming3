@@ -32,7 +32,7 @@ public class Controller {
     JDialog dialog;
 
     public void show() {
-        dialog  = new JDialog(Application.window, "Employee", true);
+        dialog  = new JDialog(Application.window, "Branch Office", true);
         dialog.setSize(600, 400);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setContentPane(view.get_panel());

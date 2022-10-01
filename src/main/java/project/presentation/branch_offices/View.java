@@ -54,7 +54,6 @@ public class View implements Observer {
         } catch(Exception ex) {
             System.err.println("Error de lectura");
         }
-        ToolTipManager.sharedInstance().setInitialDelay(2);
 
         results_field.addMouseListener(new MouseAdapter() {
             @Override

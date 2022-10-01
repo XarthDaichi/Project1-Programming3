@@ -87,7 +87,7 @@ public class Controller {
         } catch (Exception ex) {}
     }
 
-    public void add(Branch_Office b) {
+    public void add(Branch_Office b) throws Exception {
         Service.instance().branch_office_add(b);
         this.update();
     }
