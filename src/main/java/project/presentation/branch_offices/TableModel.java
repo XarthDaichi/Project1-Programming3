@@ -37,7 +37,7 @@ public class TableModel extends AbstractTableModel implements javax.swing.table.
             case ZONAGEPERCENTAGE:
                 return branch_office.get_zonage_percentage();
             case DIRECTION:
-                return branch_office.get_direction();
+                return branch_office.get_reference();
             default:
                 return "";
         }

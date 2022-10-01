@@ -1,10 +1,13 @@
 package project.logic;
 
+import jakarta.xml.bind.annotation.XmlIDREF;
+
 public class Employee {
     String id;
     String name;
     String phone;
     double base_salary;
+    @XmlIDREF
     Branch_Office work_place;
 
     public Employee(String id, String name, String phone, double base_salary, Branch_Office work_place) {

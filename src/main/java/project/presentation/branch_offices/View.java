@@ -1,7 +1,5 @@
 package project.presentation.branch_offices;
 
-import project.logic.Branch_Office;
-import project.logic.Direction;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -9,9 +7,7 @@ import java.util.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
@@ -46,7 +42,7 @@ public class View implements Observer {
         locations = new Vector<>();
         try {
             mapPanel.setSize(600,600);
-            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa11.png")));
+            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa.png")));
             map = map.getScaledInstance(mapPanel.getWidth(), mapPanel.getHeight(), Image.SCALE_SMOOTH);
             branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../Sucursal.png")));
             branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../SucursalSel.png")));

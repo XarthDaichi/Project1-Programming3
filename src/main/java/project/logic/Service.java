@@ -23,9 +23,9 @@ public class Service {
             data=XmlPersister.instance().load();
         } catch(Exception e) {
             data = new Data();
-//            data.push(new Employee("111", "Franklin Chang", "11111", 1.0, new Branch_Office()));
-//            data.push(new Employee("222", "Sandra Cauffman", "22222", 2.0, new Branch_Office()));
-//            data.push(new Employee("333", "Ivan Vargas", "33333", 3.0, new Branch_Office()));
+            //data.push(new Employee("111", "Franklin Chang", "11111", 1.0, new Branch_Office()));
+            //data.push(new Employee("222", "Sandra Cauffman", "22222", 2.0, new Branch_Office()));
+            //data.push(new Employee("333", "Ivan Vargas", "33333", 3.0, new Branch_Office()));
         }
     }
 
@@ -67,7 +67,7 @@ public class Service {
         try {
             XmlPersister.instance().store(data);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 

@@ -1,20 +1,28 @@
 package project.logic;
+import jakarta.xml.bind.annotation.XmlID;
+
+import java.awt.Point;
+import javax.swing.*;
 
 public class Branch_Office {
+    @XmlID
     private String code;
     private String reference;
     private double zonage_percentage;
-    private Direction direction;
+    private int x;
+    private int y;
+    //private Direction direction;
 
-    public Branch_Office(String code, String reference, double zonage_percentage, Direction direction) {
+    public Branch_Office(String code, String reference, double zonage_percentage, int x, int y) {
         this.code = code;
         this.reference = reference;
         this.zonage_percentage = zonage_percentage;
-        this.direction = direction;
+        this.x = x;
+        this.y = y;
     }
 
     public Branch_Office() {
-        this("","",0.0,new Direction());
+        this("","",0.0,0,0);
     }
 
     public String get_code() {
@@ -41,12 +49,20 @@ public class Branch_Office {
         this.zonage_percentage = zonage_percentage;
     }
 
-    public Direction get_direction() {
-        return direction;
+    public int getX() {
+        return x;
     }
 
-    public void set_direction(Direction direction) {
-        this.direction = direction;
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     @Override
@@ -55,7 +71,7 @@ public class Branch_Office {
                 "code='" + code + '\'' +
                 ", reference='" + reference + '\'' +
                 ", zonage_percentage=" + zonage_percentage +
-                ", direction=" + direction.toString() +
+                ", direction=" + "(" + x + ", " + y + ")" +
                 '}';
     }
 }
