@@ -18,7 +18,6 @@ import java.util.Observer;
 
 public class View implements Observer {
     Vector<JLabel> locations;
-    Integer count;
     private JPanel panel;
     private JPanel input_panel;
     private JLabel code_label;
@@ -49,13 +48,24 @@ public class View implements Observer {
             mapPanel.setSize(600,600);
             map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa11.png")));
             map = map.getScaledInstance(mapPanel.getWidth(), mapPanel.getHeight(), Image.SCALE_SMOOTH);
-            branch_office = ImageIO.read(getClass().getResourceAsStream("../../../Sucursal.png"));
-            branch_office_selected = ImageIO.read(getClass().getResourceAsStream("../../../SucursalSel.png"));
+            branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../Sucursal.png")));
+            branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../SucursalSel.png")));
             mapPanel.setIcon(new ImageIcon(map));
         } catch(Exception ex) {
             System.err.println("Error de lectura");
         }
         ToolTipManager.sharedInstance().setInitialDelay(2);
+
+        results_field.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int row = results_field.getSelectedRow();
+                    controller.edit(row);
+                }
+            }
+        });
+
         mapPanel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {

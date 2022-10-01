@@ -21,6 +21,8 @@ public class View implements Observer {
     private JTextField zonage_percentage_text;
     private JButton save_button;
     private JButton cancel_button;
+    private JPanel mapPanel;
+    private JLabel mapLabel;
 
     public View() {
         save_button.addActionListener(new ActionListener() {

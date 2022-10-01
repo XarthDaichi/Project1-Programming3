@@ -70,5 +70,9 @@ public class Controller {
     }
 
     public void edit(Branch_Office b) {
+        model.set_mode(Application.EDIT_MODE);
+        model.set_current(b);
+        model.commit();
+        this.show();
     }
 }
