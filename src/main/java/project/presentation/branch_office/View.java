@@ -3,16 +3,17 @@ package project.presentation.branch_office;
 import project.Application;
 import project.logic.Branch_Office;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
 public class View implements Observer {
     private JPanel panel;
-    private JPanel input_panel;
-    private JPanel button_panel;
     private JLabel code_label;
     private JTextField code_text;
     private JLabel reference_label;
@@ -21,10 +22,25 @@ public class View implements Observer {
     private JTextField zonage_percentage_text;
     private JButton save_button;
     private JButton cancel_button;
+    private JPanel input_panel;
+    private JPanel button_panel;
     private JPanel mapPanel;
     private JLabel mapLabel;
+    Image map;
+    Image branch_office;
+    Image branch_office_selected;
 
     public View() {
+        try {
+            mapLabel.setSize(300,300);
+            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa11.png")));
+            map = map.getScaledInstance(mapLabel.getWidth(), mapLabel.getHeight(), Image.SCALE_SMOOTH);
+            branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../Sucursal.png")));
+            branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../SucursalSel.png")));
+            mapLabel.setIcon(new ImageIcon(map));
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
         save_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
