@@ -1,5 +1,7 @@
 package project.presentation.branch_offices;
 
+import project.logic.Branch_Office;
+
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -38,15 +40,18 @@ public class View implements Observer {
     Image branch_office;
     Image branch_office_selected;
 
+    private String temp_code;
+
     public View() {
         locations = new Vector<>();
         try {
             mapPanel.setSize(600,600);
             map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa.png")));
             map = map.getScaledInstance(mapPanel.getWidth(), mapPanel.getHeight(), Image.SCALE_SMOOTH);
-            branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../Sucursal.png")));
-            branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../SucursalSel.png")));
+            branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Sucursal.png")));
+            branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/SucursalSel.png")));
             mapPanel.setIcon(new ImageIcon(map));
+            draw_all();
         } catch(Exception ex) {
             System.err.println("Error de lectura");
         }
@@ -54,90 +59,15 @@ public class View implements Observer {
         results_field.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int row = results_field.getSelectedRow();
+                int row = results_field.getSelectedRow();
+                if (e.getClickCount() == 1) {
+                    temp_code = model.get_branch_offices().get(row).get_code();
+                    map_update();
+                }
+                else if (e.getClickCount() >= 2) {
+
                     controller.edit(row);
                 }
-            }
-        });
-
-        mapPanel.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    //if(e.getX() > 10 && e.getX() < 500 && e.getY() > 20 && e.getY() < 500) {
-                        BufferedImage myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Sucursal.png")));
-                        JLabel icon = new JLabel(new ImageIcon(myPicture));
-                    for (JLabel location : locations) {
-                        location.setIcon(new ImageIcon(myPicture));
-                    }
-                        mapPanel.add(icon);
-                        icon.setLocation(e.getX() - 17,e.getY() - 32);
-                        icon.setSize(34,34);
-                        icon.setVisible(true);
-                        locations.add(icon);
-                    System.out.println(e.getPoint());
-
-                        icon.addMouseListener(new MouseListener() {
-                            @Override
-                            public void mouseClicked(MouseEvent e) {
-                                try {
-                                    for (JLabel location : locations) {
-                                        location.setIcon(new ImageIcon(myPicture));
-                                    }
-                                    BufferedImage sel = ImageIO.read(Objects.requireNonNull(getClass().getResource("/SucursalSel.png")));
-                                    icon.setIcon(new ImageIcon(sel));
-                                }catch(Exception exc) {
-                                    System.out.println("Error");
-                                }
-                            }
-
-                            @Override
-                            public void mousePressed(MouseEvent e) {
-
-                            }
-
-                            @Override
-                            public void mouseReleased(MouseEvent e) {
-
-                            }
-
-                            @Override
-                            public void mouseEntered(MouseEvent e) {
-
-                            }
-
-                            @Override
-                            public void mouseExited(MouseEvent e) {
-
-                            }
-                        });
-
-                    //}
-                    //System.out.println(e.getX() + ", " + e.getY());
-                } catch(Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         });
 
@@ -196,6 +126,84 @@ public class View implements Observer {
                 } catch (Exception ex) {}
             }
         });
+        mapPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    //if(e.getX() > 10 && e.getX() < 500 && e.getY() > 20 && e.getY() < 500) {
+                    JLabel icon = new JLabel(new ImageIcon(branch_office));
+                    for (JLabel location : locations) {
+                        location.setIcon(new ImageIcon(branch_office));
+                    }
+                    mapPanel.add(icon);
+                    icon.setLocation(e.getX() - 17,e.getY() - 32);
+                    icon.setSize(34,34);
+                    icon.setVisible(true);
+                    locations.add(icon);
+                    System.out.println(e.getPoint());
+                    controller.pre_add(e.getX(), e.getY());
+
+                    icon.addMouseListener(new MouseListener() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            try {
+                                for (JLabel location : locations) {
+                                    location.setIcon(new ImageIcon(branch_office));
+                                }
+                                icon.setIcon(new ImageIcon(branch_office_selected));
+                            }catch(Exception exc) {
+                                System.out.println("Error");
+                            }
+                        }
+
+                        @Override
+                        public void mousePressed(MouseEvent e) {
+
+                        }
+
+                        @Override
+                        public void mouseReleased(MouseEvent e) {
+
+                        }
+
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+
+                        }
+
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+
+                        }
+                    });
+
+                    //}
+                    //System.out.println(e.getX() + ", " + e.getY());
+                } catch(Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
 
     public JPanel get_panel() {
@@ -216,9 +224,32 @@ public class View implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        map_update();
         int[] columns = {TableModel.CODE, TableModel.REFERENCE, TableModel.ZONAGEPERCENTAGE, TableModel.DIRECTION};
         results_field.setModel(new TableModel(columns, model.get_branch_offices()));
         results_field.setRowHeight(30);
+        draw_all();
         this.panel.revalidate();
+    }
+
+    public void draw_all() {
+        for (int j = 0; j < model.get_branch_offices().size(); j++) {
+            JLabel temp = new JLabel();
+            Branch_Office b = model.get_branch_offices().get(j);
+            temp.setSize(30, 30);
+            temp.setLocation(b.getX() - 15, b.getY() - 31);
+            temp.setToolTipText("Code: " + b.get_code() + ", Reference: " + b.get_reference());
+            if(Objects.equals(temp_code, b.get_code()))
+                temp.setIcon(new ImageIcon(branch_office_selected));
+            else
+                temp.setIcon(new ImageIcon(branch_office));
+            temp.setVisible(true);
+            mapPanel.add(temp);
+        }
+    }
+    public void map_update() {
+        mapPanel.removeAll();
+        draw_all();
+        panel.updateUI();
     }
 }
