@@ -4,6 +4,7 @@ import project.Application;
 import project.logic.Branch_Office;
 import project.logic.Employee;
 import project.logic.Service;
+import project.presentation.branch_offices.*;
 
 import java.util.List;
 import javax.swing.*;
@@ -13,21 +14,23 @@ public class Controller {
     View view;
 
     Model model;
+    project.presentation.branch_offices.Model branchOfficesModel;
 
-
-    public Controller(View view, Model model, List<Branch_Office> branchOffices) {
+    public Controller(View view, Model model, project.presentation.branch_offices.Model branchOfficesModel) {
         model.set_current(new Employee());
 
         this.view = view;
         this.model = model;
+        this.branchOfficesModel = branchOfficesModel;
         view.setController(this);
         view.setModel(model);
-        this.model.setBranch_offices(branchOffices);
+        this.model.setBranch_offices(branchOfficesModel.get_branch_offices());
     }
 
     public void pre_add() {
         model.set_mode(Application.ADD_MODE);
         model.set_current(new Employee());
+        this.model.setBranch_offices(branchOfficesModel.get_branch_offices());
         model.commit();
         this.show();
     }
@@ -75,6 +78,7 @@ public class Controller {
     public void edit(Employee e) {
         model.set_mode(Application.EDIT_MODE);
         model.set_current(e);
+        this.model.setBranch_offices(branchOfficesModel.get_branch_offices());
         model.commit();
         this.show();
     }

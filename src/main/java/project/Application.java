@@ -24,7 +24,7 @@ public class Application {
 
         project.presentation.employee.Model employee_model = new project.presentation.employee.Model();
         project.presentation.employee.View employee_view = new project.presentation.employee.View(employee_model);
-        employee_controller = new project.presentation.employee.Controller(employee_view, employee_model,branch_offices_model.get_branch_offices());
+        employee_controller = new project.presentation.employee.Controller(employee_view, employee_model,branch_offices_model);
 
         project.presentation.about.Model about_model = new project.presentation.about.Model();
         project.presentation.about.View about_view = new project.presentation.about.View();
