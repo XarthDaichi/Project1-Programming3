@@ -45,7 +45,7 @@ public class View implements Observer {
 
     public View() {
         search_button.addActionListener(e -> controller.search(name_field.getText()));
-        search_button.addActionListener(e -> controller.pre_add());
+        add_button.addActionListener(e -> controller.pre_add());
         results_field.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

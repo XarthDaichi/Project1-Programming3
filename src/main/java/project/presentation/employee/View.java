@@ -110,7 +110,7 @@ public class View implements Observer {
         e.set_name(name_text.getText());
         e.set_phone(phone_text.getText());
         e.set_base_salary(Double.parseDouble(salary_text.getText()));
-        e.setTotal_salary(e.get_base_salary() + (e.get_base_salary() / 100));
+        e.setTotal_salary(e.get_base_salary() * (1 + e.get_work_place().get_zonage_percentage() / 100));
         for (int i = 0; i < model.getBranch_offices().size() ; i++) {
             if(model.getBranch_offices().get(i).get_reference().equals(sucursal_field.getText()))
                 e.set_work_place(model.getBranch_offices().get(i));

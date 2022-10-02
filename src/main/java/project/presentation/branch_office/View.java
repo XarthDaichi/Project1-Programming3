@@ -36,6 +36,7 @@ public class View implements Observer {
 
     public View(Model model) {
         this.model = model;
+        //locate = null;
         try {
             mapLabel.setSize(300,300);
             map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa.png")));
@@ -53,6 +54,7 @@ public class View implements Observer {
             public void mouseClicked(MouseEvent e) {
                 try {
                     //BufferedImage myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Sucursal.png")));
+                    //locate = new JLabel(new ImageIcon(branch_office_selected));
                     locate.setLocation(e.getX() - 9, e.getY() - 16);
                     locate.setSize(18,18);
                 } catch(Exception ex) {
@@ -92,6 +94,8 @@ public class View implements Observer {
                         JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }
+                mapLabel.remove(locate);
+                //locate = null;
             }
         });
         cancel_button.addActionListener(new ActionListener() {
@@ -99,6 +103,7 @@ public class View implements Observer {
             public void actionPerformed(ActionEvent e) {
                 controller.hide();
                 mapLabel.remove(locate);
+                //locate = null;
             }
         });
     }
@@ -128,12 +133,17 @@ public class View implements Observer {
         this.reference_text.setText(current.get_reference());
         this.zonage_percentage_text.setText(String.valueOf(current.get_zonage_percentage()));
         this.panel.validate();
-        if(model.get_current().getX() != 0 && model.get_current().getY() != 0) {
+        if(locate == null) {
             locate = new JLabel(new ImageIcon(branch_office_selected));
+        }
+            //if(model.get_current().getX() != 0 && model.get_current().getY() != 0) {
+
+
             locate.setLocation(model.get_current().getX(),model.get_current().getY());
             locate.setSize(18,18);
             mapLabel.add(locate);
-        }
+
+           // }
     }
 
     public Branch_Office take() {

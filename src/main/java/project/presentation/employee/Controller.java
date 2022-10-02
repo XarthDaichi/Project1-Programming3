@@ -14,6 +14,7 @@ public class Controller {
 
     Model model;
 
+
     public Controller(View view, Model model, List<Branch_Office> branchOffices) {
         model.set_current(new Employee());
 

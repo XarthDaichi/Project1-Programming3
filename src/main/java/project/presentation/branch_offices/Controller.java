@@ -78,7 +78,9 @@ public class Controller {
         try {
             b = Service.instance().get_branch_office(code);
             Application.branch_office_controller.edit(b);
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public void erase(int row) {
