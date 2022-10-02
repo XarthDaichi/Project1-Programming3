@@ -26,12 +26,17 @@ public class Application {
         project.presentation.branch_office.View branch_office_view = new project.presentation.branch_office.View();
         branch_office_controller = new project.presentation.branch_office.Controller(branch_office_view, branch_office_model);
 
+        project.presentation.about.Model about_model = new project.presentation.about.Model();
+        project.presentation.about.View about_view = new project.presentation.about.View();
+        about_controller = new project.presentation.about.Controller(about_view, about_model);
+
         project.presentation.main.Model main_model = new project.presentation.main.Model();
         project.presentation.main.View main_view = new project.presentation.main.View();
         main_controller = new project.presentation.main.Controller(main_view, main_model);
 
         main_view.get_main_pane().add("Employees", employees_view.get_panel());
         main_view.get_main_pane().add("Branch Offices", branch_offices_view.get_panel());
+        main_view.get_main_pane().add("About", about_view.get_panel());
         window = new JFrame();
         window.setSize(400, 300);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -51,6 +56,7 @@ public class Application {
     public static project.presentation.branch_office.Controller branch_office_controller;
     public static project.presentation.main.Controller main_controller;
 
+    public static project.presentation.about.Controller about_controller;
     public static JFrame window;
 
     public static final int ADD_MODE=0;

@@ -23,6 +23,13 @@ public class Controller {
         this.model = model;
     }
 
+    public void pre_add(int x, int y) {
+        model.set_mode(Application.ADD_MODE);
+        model.set_current(new Branch_Office(x, y));
+        model.commit();
+        this.show();
+    }
+
     public void pre_add() {
         model.set_mode(Application.ADD_MODE);
         model.set_current(new Branch_Office());

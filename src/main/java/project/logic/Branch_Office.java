@@ -25,6 +25,10 @@ public class Branch_Office {
         this("","",0.0,0,0);
     }
 
+    public Branch_Office(int x, int y) {
+        this("","",0.0,x,y);
+    }
+
     public String get_code() {
         return code;
     }
