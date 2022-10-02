@@ -17,8 +17,8 @@ public class Controller {
 
         this.view = view;
         this.model = model;
-        view.set_controller(this);
-        view.set_model(model);
+        view.setController(this);
+        view.setModel(model);
     }
 
     public void pre_add() {
@@ -34,7 +34,7 @@ public class Controller {
         dialog  = new JDialog(Application.window, "Employee", true);
         dialog.setSize(600, 400);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        dialog.setContentPane(view.get_panel());
+        dialog.setContentPane(view.getPanel());
         Point location = Application.window.getLocation();
         dialog.setLocation(location.x+400, location.y+100);
         dialog.setVisible(true);
@@ -45,7 +45,7 @@ public class Controller {
     }
 
     public void show1() {
-        Application.window.setContentPane(view.get_panel());
+        Application.window.setContentPane(view.getPanel());
         Application.window.revalidate();
     }
 

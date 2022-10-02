@@ -34,7 +34,7 @@ public class Application {
         project.presentation.main.View main_view = new project.presentation.main.View();
         main_controller = new project.presentation.main.Controller(main_view, main_model);
 
-        main_view.get_main_pane().add("Employees", employees_view.get_panel());
+        main_view.get_main_pane().add("Employees", employees_view.getPanel());
         main_view.get_main_pane().add("Branch Offices", branch_offices_view.get_panel());
         main_view.get_main_pane().add("About", about_view.get_panel());
         window = new JFrame();

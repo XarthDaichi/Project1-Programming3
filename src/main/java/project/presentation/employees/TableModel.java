@@ -42,10 +42,14 @@ public class TableModel extends AbstractTableModel implements javax.swing.table.
                 return employee.get_name();
             case PHONE:
                 return employee.get_phone();
-            case SALARY:
+            case BASE_SALARY:
                 return employee.get_base_salary();
             case WORKPLACE:
                 return employee.get_work_place().get_reference();
+            case ZONAGE:
+                return employee.get_work_place().get_zonage_percentage();
+            case TOTAL_SALARY:
+                return employee.getTotal_salary();
             default:
                 return "";
         }
@@ -53,18 +57,21 @@ public class TableModel extends AbstractTableModel implements javax.swing.table.
 
     public static final int ID = 0;
     public static final int NAME = 1;
-
     public static final int PHONE = 2;
-    public static final int SALARY = 3;
+    public static final int BASE_SALARY = 3;
     public static final int WORKPLACE = 4;
+    public static final int ZONAGE = 5;
+    public static final int TOTAL_SALARY = 6;
 
-    String[] columnNames = new String[5];
+    String[] columnNames = new String[7];
 
     private void initColumnNames() {
         columnNames[ID] = "Id";
         columnNames[NAME] = "Name";
         columnNames[PHONE] = "Phone";
-        columnNames[SALARY] = "Salary";
+        columnNames[BASE_SALARY] = "Base_Salary";
         columnNames[WORKPLACE] = "Work Place";
+        columnNames[ZONAGE] = "Zonage";
+        columnNames[TOTAL_SALARY] = "Total Salary";
     }
 }

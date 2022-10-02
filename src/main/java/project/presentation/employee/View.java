@@ -3,14 +3,13 @@ package project.presentation.employee;
 import project.Application;
 import project.logic.Branch_Office;
 import project.logic.Employee;
+import project.logic.Service;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
@@ -29,94 +28,88 @@ public class View implements Observer {
     private JButton cancel_button;
     private JPanel map_field;
     private JLabel map_label;
+    private JTextField sucursal_field;
+    private JLabel SucursalLabel;
+    Controller controller;
+    Model model;
+    private JLabel mapLabel;
+    private JLabel selectedLabel;
+    private JLabel unselectedLabel;
 
     Image map;
     Image branch_office;
     Image branch_office_selected;
 
     public View() {
+
         try {
-            map_label.setSize(300,300);
-            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa11.png")));
-            map = map.getScaledInstance(map_label.getWidth(), map_label.getHeight(), Image.SCALE_SMOOTH);
-            branch_office = ImageIO.read(getClass().getResourceAsStream("../../../Sucursal.png"));
-            branch_office_selected = ImageIO.read(getClass().getResourceAsStream("../../../SucursalSel.png"));
-            map_label.setIcon(new ImageIcon(map));
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+            mapLabel = new JLabel(); mapLabel.removeAll();
+            selectedLabel = new JLabel();
+            unselectedLabel = new JLabel();
+
+            branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/SucursalSel.png")));
+            branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Sucursal.png")));
+            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa.png")));
+
+            branch_office_selected = branch_office_selected.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+            branch_office = branch_office.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+            map = map.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
+
+            selectedLabel.setIcon(new ImageIcon(branch_office_selected));
+            unselectedLabel.setIcon(new ImageIcon(branch_office));
+            mapLabel.setIcon(new ImageIcon(map));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
-        map_label.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println(e.getPoint());
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        save_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(validate()) {
-                    Employee n = take();
+        save_button.addActionListener(e -> {
+            clean();
+            try {
+                if (validate()) {
                     try {
-                        controller.save(n);
+                        controller.save(take());
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(panel, "El codigo debe ser unico","ERROR",JOptionPane.ERROR_MESSAGE);
                     }
                 }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         });
-        cancel_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.hide();
-            }
-        });
+        cancel_button.addActionListener(e -> controller.hide());
     }
 
-    public JPanel get_panel() {
+    public JPanel getPanel() {
         return panel;
     }
 
-    Controller controller;
-
-    Model model;
-
-    public void set_controller(Controller controller) {
+    public void setController(Controller controller) {
         this.controller = controller;
     }
 
-    public void set_model(Model model) {
+    public void setModel(Model model) {
         this.model = model;
         model.addObserver(this);
     }
 
     @Override
-    public void update(Observable updated_model, Object parameters) {
+    public void update(Observable updatedModel, Object parametros) {
+
         Employee current = model.get_current();
         this.id_text.setEnabled(model.get_mode() == Application.ADD_MODE);
         this.id_text.setText(current.get_id());
         name_text.setText(current.get_name());
+        phone_text.setText(current.get_phone());
+
+        if(String.valueOf(current.get_base_salary()).equals("0.0")){ salary_text.setText(""); }
+        else { salary_text.setText(String.valueOf(current.get_base_salary())); }
+
+        if(current.get_work_place() != null){ sucursal_field.setText(current.get_work_place().get_reference()); }
+        else { sucursal_field.setText(""); }
+
+        actualizarMapa();
+
         this.panel.validate();
     }
 
@@ -126,50 +119,119 @@ public class View implements Observer {
         e.set_name(name_text.getText());
         e.set_phone(phone_text.getText());
         e.set_base_salary(Double.parseDouble(salary_text.getText()));
-        e.set_work_place(new Branch_Office());
+        e.setTotal_salary(e.get_base_salary() + (e.get_base_salary() / 100));
+        for (int i = 0; i < model.getBranch_offices().size() ; i++) {
+            if(model.getBranch_offices().get(i).get_reference().equals(sucursal_field.getText()))
+                e.set_work_place(model.getBranch_offices().get(i));
+        }
         return e;
     }
 
-    private boolean validate() {
+    public void clean() {
+        id_text.setBorder(null);
+        name_text.setBorder(null);
+        phone_text.setBorder(null);
+        salary_text.setBorder(null);
+        SucursalLabel.setBorder(null);
+        mapLabel.setBorder(null);
+    }
+
+    private boolean validate() throws Exception {
         boolean valid = true;
+        String mensajeError = "";
+        int concatenaciones = 0;
+
         if (id_text.getText().isEmpty()) {
             valid = false;
             id_label.setBorder(Application.BORDER_ERROR);
-            id_label.setToolTipText("Id required");
-        } else {
-            id_label.setBorder(null);
-            id_label.setToolTipText(null);
+            mensajeError += "Cedula requerida. "; concatenaciones++;
+        } else if(!id_text.getText().matches("[0-9]+")){
+            valid = false;
+            id_label.setBorder(Application.BORDER_ERROR);
+            mensajeError += "Cedula debe ser numerico. ";
         }
-
         if (name_text.getText().length() == 0) {
             valid = false;
             name_label.setBorder(Application.BORDER_ERROR);
-            name_label.setToolTipText("Name required");
-        } else {
-            name_label.setBorder(null);
-            name_label.setToolTipText(null);
+            mensajeError += "Nombre requerido. "; concatenaciones++;
+        } else if(!name_text.getText().matches("^[a-z\\sA-Z]+$")){
+            valid = false;
+            name_label.setBorder(Application.BORDER_ERROR);
+            mensajeError += "El nombre no puede ser numerico. ";
         }
-
-        if (phone_text.getText().isEmpty()) {
+        if (phone_text.getText().length() == 0) {
             valid = false;
             phone_label.setBorder(Application.BORDER_ERROR);
-            phone_label.setToolTipText("Phone required");
-        } else {
-            phone_label.setBorder(null);
-            phone_label.setToolTipText(null);
+            mensajeError += "Telefono requerido. "; concatenaciones++;
+        } else if(!phone_text.getText().matches("[0-9]+")) {
+            valid = false;
+            phone_label.setBorder(Application.BORDER_ERROR);
+            mensajeError += "El telefono debe llenarse con numeros enteros. ";
+        } else if(phone_text.getText().length() != 8) {
+            valid = false;
+            phone_label.setBorder(Application.BORDER_ERROR);
+            mensajeError += "El telefono debe tener 8 digitos. ";
         }
-
-        if (salary_text.getText().isEmpty()) {
+        if (salary_text.getText().length() == 0) {
             valid = false;
             salary_label.setBorder(Application.BORDER_ERROR);
-            salary_label.setToolTipText("Salary required");
-        } else {
-            salary_label.setBorder(null);
-            salary_label.setToolTipText(null);
+            mensajeError += "Salario requerido. "; concatenaciones++;
+        } else if(!salary_text.getText().matches("^[0-9]+\\.?[0-9]*$")) {
+            valid = false;
+            salary_label.setBorder(Application.BORDER_ERROR);
+            mensajeError += "El salario debe ser numerico. ";
+        }
+        if (sucursal_field.getText().length() == 0) {
+            valid = false;
+            SucursalLabel.setBorder(Application.BORDER_ERROR);
+            mensajeError += "Sucursal requerida. "; concatenaciones++;
+        } else if(Service.instance().get_branch_office(sucursal_field.getText()) == null) {
+            valid = false;
+            SucursalLabel.setBorder(Application.BORDER_ERROR);
+            mensajeError += "La sucursal no existe. ";
+        }
+        if(concatenaciones == 5){
+            JOptionPane.showMessageDialog(panel, "Todos los campos son requeridos","ERROR",JOptionPane.ERROR_MESSAGE);
+        } else if(!mensajeError.equals("")){
+            JOptionPane.showMessageDialog(panel, mensajeError,"ERROR",JOptionPane.ERROR_MESSAGE);
         }
         return valid;
+
     }
 
-    private void createUIComponents() {
+    public void actualizarMapa(){
+        mapLabel.removeAll();
+        llenarMapa();
+        panel.updateUI();
+    }
+
+    private void llenarMapa() {
+        for (int j = 0; j < model.getBranch_offices().size(); j++) {
+            JLabel temp = new JLabel();
+            Branch_Office s = model.getBranch_offices().get(j);
+            temp.setSize(30, 30);
+            temp.setLocation(s.getX() - 15, s.getY() - 31);
+            temp.setToolTipText("Code: " + s.get_code() + ", Reference: " + s.get_reference());
+            temp.setIcon(new ImageIcon(branch_office));
+            if(sucursal_field.getText().equals(s.get_reference())){
+                temp.setIcon(new ImageIcon(branch_office_selected));
+            }
+            temp.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    temp.setIcon(new ImageIcon(branch_office_selected));
+                    sucursal_field.setText(s.get_reference());
+                    sucursal_field.setForeground(Color.RED);
+                    actualizarMapa();
+                }
+            });
+            temp.setVisible(true);
+            mapLabel.add(temp);
+        }
+    }
+
+    private void createUIComponents() throws IOException {
+        // TODO: place custom component creation code here
+
     }
 }
+

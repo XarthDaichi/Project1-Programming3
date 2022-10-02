@@ -33,8 +33,8 @@ public class Controller {
         model.set_employees(Service.instance().employees_search(""));
         this.view = view;
         this.model = model;
-        view.set_controller(this);
-        view.set_model(model);
+        view.setController(this);
+        view.setModel(model);
     }
 
     public <T> void search(T filter) {
@@ -106,7 +106,7 @@ public class Controller {
     }
 
     public void show() {
-        Application.window.setContentPane(view.get_panel());
+        Application.window.setContentPane(view.getPanel());
     }
     
     private Cell get_cell(Paragraph paragraph, TextAlignment alignment, boolean has_border) {

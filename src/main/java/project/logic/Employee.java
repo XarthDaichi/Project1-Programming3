@@ -1,25 +1,37 @@
 package project.logic;
 
+import jakarta.xml.bind.annotation.XmlID;
 import jakarta.xml.bind.annotation.XmlIDREF;
 
 public class Employee {
+    @XmlID
     String id;
     String name;
     String phone;
     double base_salary;
+    double total_salary;
     @XmlIDREF
     Branch_Office work_place;
 
-    public Employee(String id, String name, String phone, double base_salary, Branch_Office work_place) {
+    public Employee(String id, String name, String phone, double base_salary, double total_salary, Branch_Office work_place) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.base_salary = base_salary;
+        this.total_salary = total_salary;
         this.work_place = work_place;
     }
 
     public Employee() {
-        this("","","",0.0, new Branch_Office());
+        this("","","",0.0,0.00, new Branch_Office());
+    }
+
+    public double getTotal_salary() {
+        return total_salary;
+    }
+
+    public void setTotal_salary(double total_salary) {
+        this.total_salary = total_salary;
     }
 
     public String get_id() {
