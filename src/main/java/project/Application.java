@@ -7,8 +7,8 @@ import java.awt.*;
 public class Application {
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel("javax.swing.plaf.NimbusLookAndFeel");
-        } catch (Exception ex) {}
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
+        catch (Exception ex) {};
 
         project.presentation.employees.Model employees_model = new project.presentation.employees.Model();
         project.presentation.employees.View employees_view = new project.presentation.employees.View();

@@ -44,7 +44,6 @@ public class View implements Observer {
             branch_office = branch_office.getScaledInstance(18,18,Image.SCALE_SMOOTH);
             branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../SucursalSel.png")));
             branch_office_selected = branch_office_selected.getScaledInstance(18,18,Image.SCALE_SMOOTH);
-
             mapLabel.setIcon(new ImageIcon(map));
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -130,7 +129,12 @@ public class View implements Observer {
         this.code_text.setEnabled(model.get_mode() == Application.ADD_MODE);
         this.code_text.setText(current.get_code());
         reference_text.setText(current.get_reference());
-        this.panel.validate();
+        if(current.getX() != 0 && current.getY() != 0) {
+            if (locate != null) locate.setLocation(current.getX(), current.getY());
+            this.panel.validate();
+        } else {
+            locate = null;
+        }
     }
 
     public Branch_Office take() {
@@ -140,10 +144,12 @@ public class View implements Observer {
         e.set_zonage_percentage(Double.parseDouble(zonage_percentage_text.getText()));
         e.setX(locate.getX());
         e.setY(locate.getY());
+        /*
         locate = new JLabel(new ImageIcon(branch_office_selected));
         mapLabel.add(locate);
         locate.setLocation(e.getX(), e.getY());
         locate.setSize(18,18);
+         */
         return e;
     }
 
