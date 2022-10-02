@@ -64,6 +64,10 @@ public class Controller {
         model.commit();
     }
 
+    public void pre_add(int x, int y) {
+        Application.branch_office_controller.pre_add(x, y);
+    }
+
     public void pre_add() {
         Application.branch_office_controller.pre_add();
     }
@@ -74,7 +78,9 @@ public class Controller {
         try {
             b = Service.instance().get_branch_office(code);
             Application.branch_office_controller.edit(b);
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public void erase(int row) {
@@ -132,7 +138,7 @@ public class Controller {
         header.setWidth(400);
         header.setHorizontalAlignment(HorizontalAlignment.CENTER);
         header.addCell(get_cell(new Paragraph("Integrated System SISE").setFont(font).setBold().setFontSize(20f), TextAlignment.CENTER,false));
-//        header.addCell(get_cell(new Image(ImageDataFactory.create("logo.jpg")), HorizontalAlignment.CENTER,false));
+        // header.addCell(get_cell(new Image(ImageDataFactory.create("logo.jpg")), HorizontalAlignment.CENTER,false));
         document.add(header);
 
         document.add(new Paragraph(""));document.add(new Paragraph(""));

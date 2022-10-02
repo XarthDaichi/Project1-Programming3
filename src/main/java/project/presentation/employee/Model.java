@@ -1,13 +1,25 @@
 package project.presentation.employee;
 
+import project.logic.Branch_Office;
 import project.logic.Employee;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Model extends java.util.Observable{
     Employee current;
     int mode;
+    List<Branch_Office> branch_offices;
 
     public Model() {
+        this.setBranch_offices(new ArrayList<>());
+    }
 
+    public List<Branch_Office> getBranch_offices() {
+        return branch_offices;
+    }
+
+    public void setBranch_offices(List<Branch_Office> branch_offices) {
+        this.branch_offices = branch_offices;
     }
 
     public int get_mode() {

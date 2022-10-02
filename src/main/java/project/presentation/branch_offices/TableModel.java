@@ -36,8 +36,6 @@ public class TableModel extends AbstractTableModel implements javax.swing.table.
                 return branch_office.get_reference();
             case ZONAGEPERCENTAGE:
                 return branch_office.get_zonage_percentage();
-            case DIRECTION:
-                return branch_office.getX() + ", " + branch_office.getY();
             default:
                 return "";
         }
@@ -46,14 +44,12 @@ public class TableModel extends AbstractTableModel implements javax.swing.table.
     public static final int CODE = 0;
     public static final int REFERENCE = 1;
     public static final int ZONAGEPERCENTAGE = 2;
-    public static final int DIRECTION = 3;
 
-    String[] columnNames = new String[4];
+    String[] columnNames = new String[3];
 
     private void initColumnNames() {
         columnNames[CODE] = "Code";
         columnNames[REFERENCE] = "Reference";
         columnNames[ZONAGEPERCENTAGE] = "Zonage Percentage";
-        columnNames[DIRECTION] = "Direction";
     }
 }

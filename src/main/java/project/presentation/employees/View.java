@@ -36,46 +36,16 @@ public class View implements Observer {
     private JTextField phone_field;
     private JButton erase_button;
     private JButton pdf_button;
-    Image map;
+    Controller controller;
+    Model model;
+
+    public JPanel getPanel() {
+        return panel;
+    }
 
     public View() {
-        try {
-            pdf_button.setSize(20,20);
-            map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/pdf.png")));
-            map = map.getScaledInstance(pdf_button.getWidth(), pdf_button.getHeight(), Image.SCALE_SMOOTH);
-            pdf_button.setIcon(new ImageIcon(map));
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        search_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!id_field.getText().isEmpty() && !name_field.getText().isEmpty() && !phone_field.getText().isEmpty() && !salary_field.getText().isEmpty())
-                    controller.search("Employee{" +
-                            "id='" + id_field.getText() + '\'' +
-                            ", name='" + name_field.getText() + '\'' +
-                            ", phone='" + phone_field.getText() + '\'' +
-                            ", base_salary=" + salary_field.getText());
-                else if (!id_field.getText().isEmpty())
-                    controller.search_by_id(id_field.getText());
-                else if (!name_field.getText().isEmpty())
-                    controller.search_by_name(name_field.getText());
-                else if (!phone_field.getText().isEmpty())
-                    controller.search_by_phone(phone_field.getText());
-                else if (!salary_field.getText().isEmpty())
-                    controller.search_by_salary(salary_field.getText());
-                else if (!branch_office_field.getText().isEmpty())
-                    controller.search(branch_office_field.getText());
-                else
-                    controller.update();
-            }
-        });
-        add_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.pre_add();
-            }
-        });
+        search_button.addActionListener(e -> controller.search(name_field.getText()));
+        add_button.addActionListener(e -> controller.pre_add());
         results_field.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -85,50 +55,40 @@ public class View implements Observer {
                 }
             }
         });
-        erase_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = results_field.getSelectedRow();
-                controller.erase(row);
-            }
+        erase_button.addActionListener(e -> {
+            int row = results_field.getSelectedRow();
+            controller.erase(row);
         });
-
-        pdf_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    controller.print();
-                    if (Desktop.isDesktopSupported()) {
-                        File myFile = new File("employees.pdf");
-                        Desktop.getDesktop().open(myFile);
-                    }
-                } catch (Exception ex) {}
+        add_button.addActionListener(e -> controller.pre_add());
+        pdf_button.addActionListener(e -> {
+            try {
+                controller.print();
+                if (Desktop.isDesktopSupported()) {
+                    File myFile = new File("employees.pdf");
+                    Desktop.getDesktop().open(myFile);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(panel, "No se pudo imprimir el reporte","ERROR",JOptionPane.ERROR_MESSAGE);
             }
         });
     }
 
-    public JPanel get_panel() {
-        return panel;
-    }
-
-    Controller controller;
-
-    Model model;
-
-    public void set_controller(Controller controller) {
-        this.controller = controller;
-    }
-
-    public void set_model(Model model) {
+    public void setController(Controller controller) { this.controller = controller; }
+    public void setModel(Model model) {
         this.model = model;
         model.addObserver(this);
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        int[] columns = {TableModel.ID, TableModel.NAME, TableModel.PHONE, TableModel.SALARY, TableModel.WORKPLACE};
-        results_field.setModel(new TableModel(columns, model.get_employees()));
+    public void update(Observable updatedModel, Object parametros) {
+        int[] cols = {TableModel.ID, TableModel.NAME, TableModel.PHONE, TableModel.BASE_SALARY, TableModel.WORKPLACE, TableModel.ZONAGE, TableModel.TOTAL_SALARY};
+        results_field.setModel(new TableModel(cols, model.get_employees()));
         results_field.setRowHeight(30);
         this.panel.revalidate();
+    }
+
+    private void createUIComponents() {
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/main/resources/pdf.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        pdf_button.setIcon(imageIcon);
     }
 }
