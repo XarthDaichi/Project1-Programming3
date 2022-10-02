@@ -1,9 +1,11 @@
 package project.presentation.employee;
 
 import project.Application;
+import project.logic.Branch_Office;
 import project.logic.Employee;
 import project.logic.Service;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,13 +14,14 @@ public class Controller {
 
     Model model;
 
-    public Controller(View view, Model model) {
+    public Controller(View view, Model model, List<Branch_Office> branchOffices) {
         model.set_current(new Employee());
 
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
+        this.model.setBranch_offices(branchOffices);
     }
 
     public void pre_add() {

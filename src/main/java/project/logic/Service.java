@@ -85,6 +85,12 @@ public class Service {
         else throw new Exception("Branch Office does not exist");
     }
 
+    public Branch_Office get_branch_office_by_name(String name) throws Exception {
+        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_reference().equals(name)).findFirst().orElse(null);
+        if (result!=null) return result;
+        else throw new Exception("Branch Office does not exist");
+    }
+
     public void branch_office_add(Branch_Office b) {
         if (this.branch_offices_search(b).size() == 0) data.push(b);
         else throw new IllegalArgumentException("Branch Office is already in the system");

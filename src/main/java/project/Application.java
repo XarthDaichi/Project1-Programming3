@@ -10,21 +10,21 @@ public class Application {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
         catch (Exception ex) {};
 
+        project.presentation.branch_offices.Model branch_offices_model = new project.presentation.branch_offices.Model();
+        project.presentation.branch_offices.View branch_offices_view = new project.presentation.branch_offices.View(branch_offices_model);
+        branch_offices_controller = new project.presentation.branch_offices.Controller(branch_offices_view, branch_offices_model);
+
+        project.presentation.branch_office.Model branch_office_model = new project.presentation.branch_office.Model();
+        project.presentation.branch_office.View branch_office_view = new project.presentation.branch_office.View(branch_office_model);
+        branch_office_controller = new project.presentation.branch_office.Controller(branch_office_view, branch_office_model);
+
         project.presentation.employees.Model employees_model = new project.presentation.employees.Model();
         project.presentation.employees.View employees_view = new project.presentation.employees.View();
         employees_controller = new project.presentation.employees.Controller(employees_view, employees_model);
 
         project.presentation.employee.Model employee_model = new project.presentation.employee.Model();
-        project.presentation.employee.View employee_view = new project.presentation.employee.View();
-        employee_controller = new project.presentation.employee.Controller(employee_view, employee_model);
-
-        project.presentation.branch_offices.Model branch_offices_model = new project.presentation.branch_offices.Model();
-        project.presentation.branch_offices.View branch_offices_view = new project.presentation.branch_offices.View();
-        branch_offices_controller = new project.presentation.branch_offices.Controller(branch_offices_view, branch_offices_model);
-
-        project.presentation.branch_office.Model branch_office_model = new project.presentation.branch_office.Model();
-        project.presentation.branch_office.View branch_office_view = new project.presentation.branch_office.View();
-        branch_office_controller = new project.presentation.branch_office.Controller(branch_office_view, branch_office_model);
+        project.presentation.employee.View employee_view = new project.presentation.employee.View(employee_model);
+        employee_controller = new project.presentation.employee.Controller(employee_view, employee_model,branch_offices_model.get_branch_offices());
 
         project.presentation.about.Model about_model = new project.presentation.about.Model();
         project.presentation.about.View about_view = new project.presentation.about.View();

@@ -59,6 +59,7 @@ public class View implements Observer {
             int row = results_field.getSelectedRow();
             controller.erase(row);
         });
+        add_button.addActionListener(e -> controller.pre_add());
         pdf_button.addActionListener(e -> {
             try {
                 controller.print();

@@ -34,8 +34,8 @@ public class View implements Observer {
     Image branch_office_selected;
     JLabel locate;
 
-    public View() {
-        locate = null;
+    public View(Model model) {
+        this.model = model;
         try {
             mapLabel.setSize(300,300);
             map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa.png")));
@@ -53,10 +53,6 @@ public class View implements Observer {
             public void mouseClicked(MouseEvent e) {
                 try {
                     //BufferedImage myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Sucursal.png")));
-                    if (locate == null) {
-                        locate = new JLabel(new ImageIcon(branch_office_selected));
-                        mapLabel.add(locate);
-                    }
                     locate.setLocation(e.getX() - 9, e.getY() - 16);
                     locate.setSize(18,18);
                 } catch(Exception ex) {
@@ -102,6 +98,7 @@ public class View implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.hide();
+                mapLabel.remove(locate);
             }
         });
     }
@@ -128,12 +125,14 @@ public class View implements Observer {
         Branch_Office current = model.get_current();
         this.code_text.setEnabled(model.get_mode() == Application.ADD_MODE);
         this.code_text.setText(current.get_code());
-        reference_text.setText(current.get_reference());
-        if(current.getX() != 0 && current.getY() != 0) {
-            if (locate != null) locate.setLocation(current.getX(), current.getY());
-            this.panel.validate();
-        } else {
-            locate = null;
+        this.reference_text.setText(current.get_reference());
+        this.zonage_percentage_text.setText(String.valueOf(current.get_zonage_percentage()));
+        this.panel.validate();
+        if(model.get_current().getX() != 0 && model.get_current().getY() != 0) {
+            locate = new JLabel(new ImageIcon(branch_office_selected));
+            locate.setLocation(model.get_current().getX(),model.get_current().getY());
+            locate.setSize(18,18);
+            mapLabel.add(locate);
         }
     }
 

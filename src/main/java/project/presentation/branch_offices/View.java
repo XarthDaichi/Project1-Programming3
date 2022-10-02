@@ -39,10 +39,12 @@ public class View implements Observer {
     Image map;
     Image branch_office;
     Image branch_office_selected;
-
     private String temp_code;
+    Controller controller;
+    Model model;
 
-    public View() {
+    public View(Model model) {
+        set_model(model);
         locations = new Vector<>();
         try {
             mapPanel.setSize(600,600);
@@ -53,7 +55,7 @@ public class View implements Observer {
             mapPanel.setIcon(new ImageIcon(map));
             draw_all();
         } catch(Exception ex) {
-            System.err.println("Error de lectura");
+            System.err.println(ex.getMessage());
         }
 
         results_field.addMouseListener(new MouseAdapter() {
@@ -65,7 +67,6 @@ public class View implements Observer {
                     map_update();
                 }
                 else if (e.getClickCount() >= 2) {
-
                     controller.edit(row);
                 }
             }
@@ -126,92 +127,13 @@ public class View implements Observer {
                 } catch (Exception ex) {}
             }
         });
-        mapPanel.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    //if(e.getX() > 10 && e.getX() < 500 && e.getY() > 20 && e.getY() < 500) {
-                    JLabel icon = new JLabel(new ImageIcon(branch_office));
-                    for (JLabel location : locations) {
-                        location.setIcon(new ImageIcon(branch_office));
-                    }
-                    mapPanel.add(icon);
-                    icon.setLocation(e.getX() - 17,e.getY() - 32);
-                    icon.setSize(34,34);
-                    icon.setVisible(true);
-                    locations.add(icon);
-                    System.out.println(e.getPoint());
-                    controller.pre_add(e.getX(), e.getY());
-
-                    icon.addMouseListener(new MouseListener() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            try {
-                                for (JLabel location : locations) {
-                                    location.setIcon(new ImageIcon(branch_office));
-                                }
-                                icon.setIcon(new ImageIcon(branch_office_selected));
-                            }catch(Exception exc) {
-                                System.out.println("Error");
-                            }
-                        }
-
-                        @Override
-                        public void mousePressed(MouseEvent e) {
-
-                        }
-
-                        @Override
-                        public void mouseReleased(MouseEvent e) {
-
-                        }
-
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-
-                        }
-
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-
-                        }
-                    });
-
-                    //}
-                    //System.out.println(e.getX() + ", " + e.getY());
-                } catch(Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
     }
 
     public JPanel get_panel() {
         return panel;
     }
 
-    Controller controller;
-    Model model;
+
 
     public void set_controller(Controller controller) {
         this.controller = controller;
@@ -225,7 +147,7 @@ public class View implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         map_update();
-        int[] columns = {TableModel.CODE, TableModel.REFERENCE, TableModel.ZONAGEPERCENTAGE, TableModel.DIRECTION};
+        int[] columns = {TableModel.CODE, TableModel.REFERENCE, TableModel.ZONAGEPERCENTAGE};
         results_field.setModel(new TableModel(columns, model.get_branch_offices()));
         results_field.setRowHeight(30);
         draw_all();
@@ -237,7 +159,7 @@ public class View implements Observer {
             JLabel temp = new JLabel();
             Branch_Office b = model.get_branch_offices().get(j);
             temp.setSize(30, 30);
-            temp.setLocation(b.getX() - 15, b.getY() - 31);
+            temp.setLocation((b.getX() )*2, (b.getY() - 28)*2);
             temp.setToolTipText("Code: " + b.get_code() + ", Reference: " + b.get_reference());
             if(Objects.equals(temp_code, b.get_code()))
                 temp.setIcon(new ImageIcon(branch_office_selected));
@@ -245,6 +167,40 @@ public class View implements Observer {
                 temp.setIcon(new ImageIcon(branch_office));
             temp.setVisible(true);
             mapPanel.add(temp);
+            locations.add(temp);
+            temp.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    try {
+                        for (JLabel location : locations) {
+                            location.setIcon(new ImageIcon(branch_office));
+                        }
+                        temp.setIcon(new ImageIcon(branch_office_selected));
+                    }catch(Exception exc) {
+                        System.out.println("Error");
+                    }
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
         }
     }
     public void map_update() {

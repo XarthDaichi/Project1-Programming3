@@ -32,32 +32,23 @@ public class View implements Observer {
     private JLabel SucursalLabel;
     Controller controller;
     Model model;
-    private JLabel mapLabel;
-    private JLabel selectedLabel;
-    private JLabel unselectedLabel;
 
     Image map;
     Image branch_office;
     Image branch_office_selected;
 
-    public View() {
-
+    public View(Model model) {
+        this.model = model;
         try {
-            mapLabel = new JLabel(); mapLabel.removeAll();
-            selectedLabel = new JLabel();
-            unselectedLabel = new JLabel();
-
-            branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/SucursalSel.png")));
-            branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Sucursal.png")));
+            map_label.setSize(300,300);
             map = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/mapa.png")));
-
-            branch_office_selected = branch_office_selected.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-            branch_office = branch_office.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-            map = map.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
-
-            selectedLabel.setIcon(new ImageIcon(branch_office_selected));
-            unselectedLabel.setIcon(new ImageIcon(branch_office));
-            mapLabel.setIcon(new ImageIcon(map));
+            map = map.getScaledInstance(map_label.getWidth(), map_label.getHeight(), Image.SCALE_SMOOTH);
+            branch_office = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../Sucursal.png")));
+            branch_office = branch_office.getScaledInstance(18,18,Image.SCALE_SMOOTH);
+            branch_office_selected = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("../../../SucursalSel.png")));
+            branch_office_selected = branch_office_selected.getScaledInstance(18,18,Image.SCALE_SMOOTH);
+            map_label.setIcon(new ImageIcon(map));
+            actualizarMapa();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -133,7 +124,7 @@ public class View implements Observer {
         phone_text.setBorder(null);
         salary_text.setBorder(null);
         SucursalLabel.setBorder(null);
-        mapLabel.setBorder(null);
+        map_label.setBorder(null);
     }
 
     private boolean validate() throws Exception {
@@ -185,7 +176,7 @@ public class View implements Observer {
             valid = false;
             SucursalLabel.setBorder(Application.BORDER_ERROR);
             mensajeError += "Sucursal requerida. "; concatenaciones++;
-        } else if(Service.instance().get_branch_office(sucursal_field.getText()) == null) {
+        } else if(Service.instance().get_branch_office_by_name(sucursal_field.getText()) == null) {
             valid = false;
             SucursalLabel.setBorder(Application.BORDER_ERROR);
             mensajeError += "La sucursal no existe. ";
@@ -200,7 +191,7 @@ public class View implements Observer {
     }
 
     public void actualizarMapa(){
-        mapLabel.removeAll();
+        map_label.removeAll();
         llenarMapa();
         panel.updateUI();
     }
@@ -225,13 +216,8 @@ public class View implements Observer {
                 }
             });
             temp.setVisible(true);
-            mapLabel.add(temp);
+            map_label.add(temp);
         }
-    }
-
-    private void createUIComponents() throws IOException {
-        // TODO: place custom component creation code here
-
     }
 }
 
