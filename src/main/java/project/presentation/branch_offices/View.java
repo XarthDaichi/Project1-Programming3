@@ -75,19 +75,21 @@ public class View implements Observer {
         search_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!code_field.getText().isEmpty() && !reference_field.getText().isEmpty() && !zonage_percentage_field.getText().isEmpty())
-                    controller.search("Branch_Office{" +
-                            "code='" + code_field.getText() + '\'' +
-                            ", reference='" + reference_field.getText() + '\'' +
-                            ", zonage_percentage=" + zonage_percentage_field.getText());
+                if (!code_field.getText().isEmpty() && !reference_field.getText().isEmpty() && !zonage_percentage_field.getText().isEmpty()) {
+                    Branch_Office b = new Branch_Office();
+                    b.set_code(code_field.getText());
+                    b.set_reference(reference_field.getText());
+                    b.set_zonage_percentage(Double.parseDouble(zonage_percentage_field.getText()));
+                    controller.search(b);
+                }
                 else if (!code_field.getText().isEmpty())
                     controller.search_by_code(code_field.getText());
                 else if (!reference_field.getText().isEmpty())
                     controller.search_by_reference(reference_field.getText());
-                else if (!zonage_percentage_field.getText().isEmpty())
-                    controller.search_by_zonage_percentage(zonage_percentage_field.getText());
-                else if (!direction_field.getText().isEmpty())
-                    controller.search(direction_field.getText());
+//                else if (!zonage_percentage_field.getText().isEmpty())
+//                    controller.search_by_zonage_percentage(zonage_percentage_field.getText());
+//                else if (!direction_field.getText().isEmpty())
+//                    controller.search(direction_field.getText());
                 else
                     controller.update();
             }
@@ -112,7 +114,7 @@ public class View implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = results_field.getSelectedRow();
-                controller.erase(row);
+//                controller.erase(row);
             }
         });
         pdf_button.addActionListener(new ActionListener() {

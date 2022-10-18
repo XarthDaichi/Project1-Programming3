@@ -30,39 +30,62 @@ public class Controller {
     Model model;
 
     public Controller(View view, Model model) {
-        model.set_branch_offices(Service.instance().branch_offices_search(""));
+        try {
+            model.set_branch_offices(Service.instance().branch_offices_search(new Branch_Office()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         this.view = view;
         this.model = model;
         view.set_controller(this);
         view.set_model(model);
     }
 
-    public <T> void search(T filter) {
-        ArrayList<Branch_Office> rows = Service.instance().branch_offices_search(filter);
+    public void search(Branch_Office filter) {
+        ArrayList<Branch_Office> rows = null;
+        try {
+            rows = Service.instance().branch_offices_search(filter);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         model.set_branch_offices(rows);
         model.commit();
     }
 
     public void search_by_code(String code) {
-        ArrayList<Branch_Office> rows = Service.instance().branch_offices_search(code);
+        Branch_Office b = new Branch_Office();
+        b.set_code(code);
+        ArrayList<Branch_Office> rows = null;
+        try {
+            rows = Service.instance().branch_offices_search(b);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         rows = rows.stream().filter(element->element.get_code().contains(code)).collect(toCollection(ArrayList::new));
         model.set_branch_offices(rows);
         model.commit();
     }
 
     public void search_by_reference(String reference) {
-        ArrayList<Branch_Office> rows = Service.instance().branch_offices_search(reference);
+        Branch_Office b = new Branch_Office();
+        b.set_reference(reference);
+        ArrayList<Branch_Office> rows = null;
+        try {
+            rows = Service.instance().branch_offices_search(b);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         rows = rows.stream().filter(element->element.get_reference().contains(reference)).collect(toCollection(ArrayList::new));
         model.set_branch_offices(rows);
         model.commit();
     }
 
-    public void search_by_zonage_percentage(String zonage_percentage) {
-        ArrayList<Branch_Office> rows = Service.instance().branch_offices_search(zonage_percentage);
-        rows = rows.stream().filter(element -> Double.toString(element.get_zonage_percentage()).contains(zonage_percentage)).collect(toCollection(ArrayList::new));
-        model.set_branch_offices(rows);
-        model.commit();
-    }
+//    public void search_by_zonage_percentage(String zonage_percentage) {
+//        ArrayList<Branch_Office> rows = Service.instance().branch_offices_search(zonage_percentage);
+//        rows = rows.stream().filter(element -> Double.toString(element.get_zonage_percentage()).contains(zonage_percentage)).collect(toCollection(ArrayList::new));
+//        model.set_branch_offices(rows);
+//        model.commit();
+//    }
 
     public void pre_add(int x, int y) {
         Application.branch_office_controller.pre_add(x, y);
@@ -83,15 +106,15 @@ public class Controller {
         }
     }
 
-    public void erase(int row) {
-        String code = model.get_branch_offices().get(row).get_code();
-        Branch_Office b = null;
-        try {
-            b = Service.instance().get_branch_office(code);
-            Service.instance().branch_office_delete(b);
-            this.update();
-        } catch (Exception ex) {}
-    }
+//    public void erase(int row) {
+//        String code = model.get_branch_offices().get(row).get_code();
+//        Branch_Office b = null;
+//        try {
+//            b = Service.instance().get_branch_office(code);
+//            Service.instance().branch_office_delete(b);
+//            this.update();
+//        } catch (Exception ex) {}
+//    }
 
     public void add(Branch_Office b) throws Exception {
         Service.instance().branch_office_add(b);

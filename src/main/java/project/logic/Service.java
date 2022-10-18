@@ -1,5 +1,6 @@
 package project.logic;
 
+import project.data.Branch_Office_Dao;
 import project.data.Data;
 import project.data.XmlPersister;
 
@@ -15,10 +16,13 @@ public class Service {
         return the_instance;
     }
 
+    private Branch_Office_Dao branch_office_dao;
+
     private Data data;
 
     private Service() {
         //data = new Data();
+        branch_office_dao = new Branch_Office_Dao();
         try {
             data=XmlPersister.instance().load();
         } catch(Exception e) {
@@ -71,18 +75,24 @@ public class Service {
         }
     }
 
-    public <T> ArrayList<Branch_Office> branch_offices_search(T something) {
-        return data.certain_objects_branch_offices(something);
+//    public <T> ArrayList<Branch_Office> branch_offices_search(T something) {
+//        return data.certain_objects_branch_offices(something);
+//    }
+    public ArrayList<Branch_Office> branch_offices_search(Branch_Office filter) throws Exception {
+        return branch_office_dao.find_by_reference(filter.get_reference());
     }
 
     public ArrayList<Branch_Office> get_branch_offices() {
         return data.all_objects_branch_offices();
     }
 
+//    public Branch_Office get_branch_office(String code) throws Exception {
+//        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_code().equals(code)).findFirst().orElse(null);
+//        if (result!=null) return result;
+//        else throw new Exception("Branch Office does not exist");
+//    }
     public Branch_Office get_branch_office(String code) throws Exception {
-        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_code().equals(code)).findFirst().orElse(null);
-        if (result!=null) return result;
-        else throw new Exception("Branch Office does not exist");
+        return branch_office_dao.read(code);
     }
 
     public Branch_Office get_branch_office_by_name(String name) throws Exception {
@@ -91,25 +101,31 @@ public class Service {
         else throw new Exception("Branch Office does not exist");
     }
 
-    public void branch_office_add(Branch_Office b) {
-        if (this.branch_offices_search(b).size() == 0) data.push(b);
-        else throw new IllegalArgumentException("Branch Office is already in the system");
+//    public void branch_office_add(Branch_Office b) {
+//        if (this.branch_offices_search(b).size() == 0) data.push(b);
+//        else throw new IllegalArgumentException("Branch Office is already in the system");
+//    }
+    public void branch_office_add(Branch_Office b) throws Exception {
+        branch_office_dao.create(b);
     }
 
-    public void branch_office_delete(Branch_Office branch_office) throws Exception {
-        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_code().equals(branch_office.get_code())).findFirst().orElse(null);
-        if (result != null) data.erase(branch_office);
-        else throw new Exception("Branch Office does not exits");
-    }
+//    public void branch_office_delete(Branch_Office branch_office) throws Exception {
+//        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_code().equals(branch_office.get_code())).findFirst().orElse(null);
+//        if (result != null) data.erase(branch_office);
+//        else throw new Exception("Branch Office does not exits");
+//
 
-    public void branch_office_update(Branch_Office branch_office) throws Exception{
-        Branch_Office result;
-        try {
-            result = this.get_branch_office(branch_office.get_code());
-            data.erase(result);
-            data.push(branch_office);
-        } catch (Exception e) {
-            throw new Exception("Branch Office does not exist");
-        }
+//    public void branch_office_update(Branch_Office branch_office) throws Exception{
+//        Branch_Office result;
+//        try {
+//            result = this.get_branch_office(branch_office.get_code());
+//            data.erase(result);
+//            data.push(branch_office);
+//        } catch (Exception e) {
+//            throw new Exception("Branch Office does not exist");
+//        }
+//    }
+    public void branch_office_update(Branch_Office b) throws Exception {
+        branch_office_dao.update(b);
     }
 }
