@@ -52,6 +52,17 @@ public class Controller {
         model.commit();
     }
 
+    public void search_by_id(Employee filter) {
+        ArrayList<Employee> rows = null;
+        try {
+            rows = Service.instance().employees_search_id(filter);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        model.set_employees(rows);
+        model.commit();
+    }
+
     public void search_by_id(String id) {
         Employee e = new Employee();
         e.set_id(id);

@@ -91,6 +91,25 @@ public class Employee_Dao {
         }
         return result;
     }
+    public ArrayList<Employee> find_by_id(String id) throws Exception {
+        Branch_Office_Dao branch_office_dao = new Branch_Office_Dao();
+        ArrayList<Employee> result = new ArrayList<Employee>();
+        String sql = "select * " +
+                "from " +
+                "employee e " +
+                "  inner join Branch_Office s on e.branch_office=s.code " +
+                "where e.id like ?";
+        PreparedStatement stm = db.prepareStatement(sql);
+        stm.setString(1, "%" + id + "%");
+        ResultSet rs = db.executeQuery(stm);
+        Employee employee;
+        while (rs.next()) {
+            employee = from(rs, "e");
+            employee.set_work_place(branch_office_dao.from(rs, "s"));
+            result.add(employee);
+        }
+        return result;
+    }
 
     public Employee from(ResultSet rs, String alias) throws Exception {
         Employee e = new Employee();

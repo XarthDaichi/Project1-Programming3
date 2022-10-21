@@ -18,7 +18,8 @@ public class Employee {
         this.name = name;
         this.phone = phone;
         this.base_salary = base_salary;
-        this.total_salary = total_salary;
+//        this.total_salary = total_salary;
+        this.total_salary = base_salary * work_place.get_zonage_percentage();
         this.work_place = work_place;
     }
 
@@ -64,6 +65,7 @@ public class Employee {
 
     public void set_base_salary(double base_salary) {
         this.base_salary = base_salary;
+        this.total_salary = this.base_salary * this.work_place.get_zonage_percentage();
     }
 
     public Branch_Office get_work_place() {
@@ -72,6 +74,7 @@ public class Employee {
 
     public void set_work_place(Branch_Office work_place) {
         this.work_place = work_place;
+        this.total_salary = this.base_salary * this.work_place.get_zonage_percentage();
     }
 
     @Override

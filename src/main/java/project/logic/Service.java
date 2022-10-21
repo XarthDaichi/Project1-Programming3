@@ -44,6 +44,10 @@ public class Service {
         return employee_dao.find_by_name(filter.get_name());
     }
 
+    public ArrayList<Employee> employees_search_id(Employee filter) throws Exception{
+        return employee_dao.find_by_id(filter.get_id());
+    }
+
 //    public Employee get_employee(String id) throws Exception {
 //        Employee result = data.all_objects_employees().stream().filter(e->e.get_id().equals(id)).findFirst().orElse(null);
 //        if (result!=null) return result;
@@ -163,4 +167,6 @@ public class Service {
     public void branch_office_update(Branch_Office b) throws Exception {
         branch_office_dao.update(b);
     }
+
+
 }

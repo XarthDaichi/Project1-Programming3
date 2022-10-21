@@ -49,7 +49,9 @@ public class View implements Observer {
             public void actionPerformed(ActionEvent e) {
                 Employee employee = new Employee();
                 employee.set_id(id_field.getText());
-                controller.search(employee);
+                employee.set_name(name_field.getText());
+                if (!name_field.getText().isEmpty()) controller.search(employee);
+                else controller.search_by_id(employee);
             }
         });
         add_button.addActionListener(e -> controller.pre_add());
