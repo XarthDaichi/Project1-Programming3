@@ -17,7 +17,7 @@ public class Branch_Office_Dao {
     public void create(Branch_Office b) throws Exception {
         String sql = "insert into " +
                 "Branch_Office " +
-                "((code, reference, zonage_percentage, x, y) " +
+                "(code, reference, zonage_percentage, x, y) " +
                 "values(?,?,?,?,?)";
         PreparedStatement stm = db.prepareStatement(sql);
         stm.setString(1, b.get_code());

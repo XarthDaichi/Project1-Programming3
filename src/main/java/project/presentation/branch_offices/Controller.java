@@ -61,7 +61,7 @@ public class Controller {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        rows = rows.stream().filter(element->element.get_code().contains(code)).collect(toCollection(ArrayList::new));
+//        rows = rows.stream().filter(element->element.get_code().contains(code)).collect(toCollection(ArrayList::new));
         model.set_branch_offices(rows);
         model.commit();
     }
@@ -75,7 +75,7 @@ public class Controller {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        rows = rows.stream().filter(element->element.get_reference().contains(reference)).collect(toCollection(ArrayList::new));
+//        rows = rows.stream().filter(element->element.get_reference().contains(reference)).collect(toCollection(ArrayList::new));
         model.set_branch_offices(rows);
         model.commit();
     }
@@ -122,7 +122,13 @@ public class Controller {
     }
 
     public void update() {
-        ArrayList<Branch_Office> rows = Service.instance().get_branch_offices();
+        Branch_Office b = new Branch_Office();
+        ArrayList<Branch_Office> rows = null;
+        try {
+            rows = Service.instance().branch_offices_search(b);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         model.set_branch_offices(rows);
         model.commit();
     }

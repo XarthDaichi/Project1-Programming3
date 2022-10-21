@@ -30,42 +30,79 @@ public class Controller {
     Model model;
 
     public Controller(View view, Model model) {
-        model.set_employees(Service.instance().employees_search(""));
+        try {
+            model.set_employees(Service.instance().employees_search(new Employee()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
     }
 
-    public <T> void search(T filter) {
-        ArrayList<Employee> rows = Service.instance().employees_search(filter);
+    public void search(Employee filter) {
+        ArrayList<Employee> rows = null;
+        try {
+            rows = Service.instance().employees_search(filter);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         model.set_employees(rows);
         model.commit();
     }
 
     public void search_by_id(String id) {
-        ArrayList<Employee> rows = Service.instance().employees_search(id);
+        Employee e = new Employee();
+        e.set_id(id);
+        ArrayList<Employee> rows = null;
+        try {
+            rows = Service.instance().employees_search(e);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
         rows = rows.stream().filter(element->element.get_id().contains(id)).collect(toCollection(ArrayList::new));
         model.set_employees(rows);
         model.commit();
     }
 
     public void search_by_name(String name) {
-        ArrayList<Employee> rows = Service.instance().employees_search(name);
+        Employee e = new Employee();
+        e.set_name(name);
+        ArrayList<Employee> rows = null;
+        try {
+            rows = Service.instance().employees_search(e);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
         rows = rows.stream().filter(element->element.get_name().contains(name)).collect(toCollection(ArrayList::new));
         model.set_employees(rows);
         model.commit();
     }
 
     public void search_by_phone(String phone) {
-        ArrayList<Employee> rows = Service.instance().employees_search(phone);
+        Employee e = new Employee();
+        e.set_phone(phone);
+        ArrayList<Employee> rows = null;
+        try {
+            rows = Service.instance().employees_search(e);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
         rows = rows.stream().filter(element->element.get_phone().contains(phone)).collect(toCollection(ArrayList::new));
         model.set_employees(rows);
         model.commit();
     }
 
     public void search_by_salary(String salary) {
-        ArrayList<Employee> rows = Service.instance().employees_search(salary);
+        Employee e = new Employee();
+        e.set_base_salary(Double.parseDouble(salary));
+        ArrayList<Employee> rows = null;
+        try {
+            rows = Service.instance().employees_search(e);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
         rows = rows.stream().filter(element -> Double.toString(element.get_base_salary()).contains(salary)).collect(toCollection(ArrayList::new));
         model.set_employees(rows);
         model.commit();

@@ -114,6 +114,7 @@ public class View implements Observer {
             if(model.getBranch_offices().get(i).get_reference().equals(sucursal_field.getText()))
                 e.set_work_place(model.getBranch_offices().get(i));
         }
+//        e.set_work_place(model.getBranch_offices().get(0));
         e.setTotal_salary(e.get_base_salary() * (1 + e.get_work_place().get_zonage_percentage() / 100));
         return e;
     }

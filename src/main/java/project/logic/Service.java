@@ -2,6 +2,7 @@ package project.logic;
 
 import project.data.Branch_Office_Dao;
 import project.data.Data;
+import project.data.Employee_Dao;
 import project.data.XmlPersister;
 
 import java.util.ArrayList;
@@ -18,11 +19,14 @@ public class Service {
 
     private Branch_Office_Dao branch_office_dao;
 
+    private Employee_Dao employee_dao;
+
     private Data data;
 
     private Service() {
         //data = new Data();
         branch_office_dao = new Branch_Office_Dao();
+        employee_dao = new Employee_Dao();
         try {
             data=XmlPersister.instance().load();
         } catch(Exception e) {
@@ -33,38 +37,62 @@ public class Service {
         }
     }
 
-    public <T> ArrayList<Employee> employees_search(T something) {
-        return data.certain_objects_employees(something);
+//    public <T> ArrayList<Employee> employees_search(T something) {
+//        return data.certain_objects_employees(something);
+//    }
+    public ArrayList<Employee> employees_search(Employee filter) throws Exception {
+        return employee_dao.find_by_name(filter.get_name());
     }
 
+//    public Employee get_employee(String id) throws Exception {
+//        Employee result = data.all_objects_employees().stream().filter(e->e.get_id().equals(id)).findFirst().orElse(null);
+//        if (result!=null) return result;
+//        else throw new Exception("Employee does not exist");
+//    }
     public Employee get_employee(String id) throws Exception {
-        Employee result = data.all_objects_employees().stream().filter(e->e.get_id().equals(id)).findFirst().orElse(null);
-        if (result!=null) return result;
-        else throw new Exception("Employee does not exist");
+        return employee_dao.read(id);
     }
+
     public ArrayList<Employee> get_employees() {
-        return data.all_objects_employees();
+        try {
+            return employees_search(new Employee());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
+
+//    public void employee_add(Employee e) throws Exception {
+//        if (this.employees_search(e).size() == 0) data.push(e);
+//        else throw new Exception("Employee is already in the system");
+//    }
+
     public void employee_add(Employee e) throws Exception {
-        if (this.employees_search(e).size() == 0) data.push(e);
-        else throw new Exception("Employee is already in the system");
+        employee_dao.create(e);
     }
+
+//    public void employee_delete(Employee employee) throws Exception {
+//        Employee result = data.all_objects_employees().stream().filter(e->e.get_id().equals(employee.get_id())).findFirst().orElse(null);
+//        if (result != null) data.erase(employee);
+//        else throw new Exception("Employee does not exits");
+//    }
 
     public void employee_delete(Employee employee) throws Exception {
-        Employee result = data.all_objects_employees().stream().filter(e->e.get_id().equals(employee.get_id())).findFirst().orElse(null);
-        if (result != null) data.erase(employee);
-        else throw new Exception("Employee does not exits");
+        employee_dao.delete(employee);
     }
 
-    public void employee_update(Employee employee) throws Exception{
-        Employee result;
-        try {
-            result = this.get_employee(employee.get_id());
-            data.erase(result);
-            data.push(employee);
-        } catch (Exception e) {
-            throw new Exception("Employee does not exist");
-        }
+//    public void employee_update(Employee employee) throws Exception{
+//        Employee result;
+//        try {
+//            result = this.get_employee(employee.get_id());
+//            data.erase(result);
+//            data.push(employee);
+//        } catch (Exception e) {
+//            throw new Exception("Employee does not exist");
+//        }
+//    }
+
+    public void employee_update(Employee e) throws Exception {
+        employee_dao.update(e);
     }
 
     public void store() {
@@ -83,7 +111,11 @@ public class Service {
     }
 
     public ArrayList<Branch_Office> get_branch_offices() {
-        return data.all_objects_branch_offices();
+        try {
+            return branch_offices_search(new Branch_Office());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    public Branch_Office get_branch_office(String code) throws Exception {
@@ -96,8 +128,11 @@ public class Service {
     }
 
     public Branch_Office get_branch_office_by_name(String name) throws Exception {
-        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_reference().equals(name)).findFirst().orElse(null);
-        if (result!=null) return result;
+//        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_reference().equals(name)).findFirst().orElse(null);
+        ArrayList<Branch_Office> result = branch_office_dao.find_by_reference(name);
+        if (result!=null) {
+            return result.get(0);
+        }
         else throw new Exception("Branch Office does not exist");
     }
 

@@ -8,17 +8,17 @@ import java.util.List;
 public class Model extends java.util.Observable{
     Employee current;
     int mode;
-    List<Branch_Office> branch_offices;
+    ArrayList<Branch_Office> branch_offices;
 
     public Model() {
         this.setBranch_offices(new ArrayList<>());
     }
 
-    public List<Branch_Office> getBranch_offices() {
+    public ArrayList<Branch_Office> getBranch_offices() {
         return branch_offices;
     }
 
-    public void setBranch_offices(List<Branch_Office> branch_offices) {
+    public void setBranch_offices(ArrayList<Branch_Office> branch_offices) {
         this.branch_offices = branch_offices;
     }
 

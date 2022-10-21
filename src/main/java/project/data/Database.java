@@ -13,7 +13,7 @@ public class Database {
         return theInstance;
     }
 
-    private static final String PROPERTIES_FILE_NAME = "../../MaterialesBD/database.properties";
+    private static final String PROPERTIES_FILE_NAME = "/database.properties";
 
     Connection cnx;
 
