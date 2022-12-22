@@ -28,7 +28,7 @@ public class Service {
         branch_office_dao = new Branch_Office_Dao();
         employee_dao = new Employee_Dao();
         try {
-            data=XmlPersister.instance().load();
+//            data=XmlPersister.instance().load();
         } catch(Exception e) {
             data = new Data();
             //data.push(new Employee("111", "Franklin Chang", "11111", 1.0, new Branch_Office()));
@@ -152,7 +152,9 @@ public class Service {
 //        Branch_Office result = data.all_objects_branch_offices().stream().filter(e->e.get_code().equals(branch_office.get_code())).findFirst().orElse(null);
 //        if (result != null) data.erase(branch_office);
 //        else throw new Exception("Branch Office does not exits");
-//
+    public void branch_office_delete(Branch_Office branch_office) throws Exception {
+        branch_office_dao.delete(branch_office);
+    }
 
 //    public void branch_office_update(Branch_Office branch_office) throws Exception{
 //        Branch_Office result;

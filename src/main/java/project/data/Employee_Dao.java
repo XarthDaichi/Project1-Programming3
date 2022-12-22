@@ -29,15 +29,20 @@ public class Employee_Dao {
     }
 
     public Employee read(String id) throws Exception {
+        Branch_Office_Dao branch_office_dao = new Branch_Office_Dao();
         String sql = "select " +
                 "* " +
                 "from Employee e " +
+                "  inner join Branch_Office s on e.branch_office=s.code " +
                 "where e.id=?";
         PreparedStatement stm = db.prepareStatement(sql);
         stm.setString(1, id);
         ResultSet rs = db.executeQuery(stm);
+        Employee employee;
         if (rs.next()) {
-            return from(rs, "e");
+            employee = from(rs, "e");
+            employee.set_work_place(branch_office_dao.from(rs, "s"));
+            return employee;
         } else {
             throw new Exception("EMPLOYEE DOES NOT EXIST");
         }

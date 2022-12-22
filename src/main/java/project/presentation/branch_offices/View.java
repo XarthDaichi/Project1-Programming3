@@ -114,7 +114,7 @@ public class View implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = results_field.getSelectedRow();
-//                controller.erase(row);
+                controller.erase(row);
             }
         });
         pdf_button.addActionListener(new ActionListener() {

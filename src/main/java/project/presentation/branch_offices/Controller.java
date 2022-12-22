@@ -106,15 +106,15 @@ public class Controller {
         }
     }
 
-//    public void erase(int row) {
-//        String code = model.get_branch_offices().get(row).get_code();
-//        Branch_Office b = null;
-//        try {
-//            b = Service.instance().get_branch_office(code);
-//            Service.instance().branch_office_delete(b);
-//            this.update();
-//        } catch (Exception ex) {}
-//    }
+    public void erase(int row) {
+        String code = model.get_branch_offices().get(row).get_code();
+        Branch_Office b = null;
+        try {
+            b = Service.instance().get_branch_office(code);
+            Service.instance().branch_office_delete(b);
+            this.update();
+        } catch (Exception ex) {}
+    }
 
     public void add(Branch_Office b) throws Exception {
         Service.instance().branch_office_add(b);
